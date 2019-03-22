@@ -12,9 +12,10 @@
     }
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js"],
+    "persistent": true
   },
   "web_accessible_resources": ["content.html"],
-  "permissions": ["https://*.google.com/search*", "activeTab"],
+  "permissions": ["https://*.google.com/search*", "webRequest"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
