@@ -1,3 +1,10 @@
 
 body {
 }
+
+.yolo {
+    &__content {
+        height: 100px;
+        background: lightgray;
+    }
+}

@@ -1,6 +1,4 @@
-console.log('hello from background');
-
-console.log(chrome.webRequest);
+console.log('Hello from background');
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
   details => {
