@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@types/chrome": "0.0.81",
     "copy-webpack-plugin": "^5.0.1",
     "css-loader": "^2.1.1",
     "mini-css-extract-plugin": "^0.5.0",
