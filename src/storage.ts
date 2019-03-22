@@ -1,0 +1,1 @@
+export const STORAGE_TIME_KEY = 'STORAGE_TIME_KEY';

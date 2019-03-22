@@ -1,10 +1,38 @@
+import { parseQuerystring, toQuerystring } from '../content/url';
+import { STORAGE_TIME_KEY } from '../storage';
+
 console.log('Hello from background');
 
-chrome.webRequest.onBeforeSendHeaders.addListener(
+chrome.runtime.onMessage.addListener(
+  (request: { type: string; timeParam: string }, sender, sendResponse) => {
+    if (request.type === 'SEND.ROLING.TIME') {
+      localStorage.setItem(STORAGE_TIME_KEY, request.timeParam);
+      console.log('background Stored time key', request.timeParam);
+    }
+    sendResponse({
+      reload: true,
+      storageData: request.timeParam,
+    });
+  },
+);
+
+chrome.webRequest.onBeforeRequest.addListener(
   details => {
-    console.log('onBeforeSendHeaders', details);
+    const storage = localStorage.getItem(STORAGE_TIME_KEY);
+    console.log('background get time key', storage);
+    if (!storage) {
+      return;
+    }
+
+    const [url, qs] = details.url.split('?');
+
+    const params = parseQuerystring(qs);
+    params.tbs = storage;
+
+    const complete = url + '?' + toQuerystring(params);
+    console.log('onBeforeRequest end', params, complete);
+    return { redirectUrl: complete };
   },
-  {
-    urls: ['https://*.google.com/search*'],
-  },
+  { urls: ['https://www.google.com/search*'] },
+  ['blocking'],
 );
