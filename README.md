@@ -5,6 +5,9 @@
 
 YoloFilter is a simple & powerful chrome extension for quick date filtering in Google Search. Your date filter settings will be saved and used for all new Google searches in Chrome. 
 
+## Download
+[![](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_496x150.png)](https://chrome.google.com/webstore/category/extensions)
+
 ## Features
 - Google Search Date Filtering
 - Filter settings saved and ready for new searches
