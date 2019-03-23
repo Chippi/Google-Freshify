@@ -12,7 +12,7 @@ YoloFilter is a quick & powerful date filtering extension for Google Search. You
 </a>
 
 ## Features
-- Google Search Date Filtering
-- Date filter settings saved
+- Range slider
+- Saved settings
 - Quick & Powerful
 - Beautiful UI
