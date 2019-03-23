@@ -1,5 +1,5 @@
 # YoloFilter
-⭐️ Star us on GitHub — it helps!
+> ⭐️ Star us on GitHub — it helps!
 
 Have you ever got old and non-relevant search results on google? YoloFilter was built to solve this annoying issue. 
 
