@@ -1,21 +1,3 @@
-const LABEL = (style, children?) => {
-  return tag('label', style, children);
-};
-const DIV = (style, children?) => tag('div', style, children);
-const RANGE = (style, model, onchange) => {
-  const range = tag('input', style) as HTMLInputElement;
-  range.type = 'range';
-  range.min = '0';
-  range.max = '5';
-  range.value = model;
-  range.autofocus = true;
-  range.onchange = (e: any) => {
-    const strValue = e.target.value;
-    const val = Number(strValue);
-    onchange(val, e);
-  };
-  return range;
-};
 function tag(tagName: string, style: string = '', children?: HTMLElement[]) {
   const el = document.createElement(tagName);
   el.setAttribute('style', style);
@@ -28,20 +10,43 @@ function tag(tagName: string, style: string = '', children?: HTMLElement[]) {
   return el;
 }
 
-const rangePartial = (model, onchange) =>
-  LABEL('', [
-    RANGE(
-      `
-width: 600px;
-margin-left: 170px;
-`,
-      model,
-      onchange,
-    ),
-  ]);
+const LABEL = (style: string, children?: HTMLElement[]) => {
+  return tag('label', style, children);
+};
 
-function createFragment(model, callback) {
-  return DIV('margin-bottom:20px;', [rangePartial(model, callback), DIV('')]);
+const DIV = (style: string, children?: HTMLElement[]) => tag('div', style, children);
+
+const RANGE = (min: number, max: number, style: string) => {
+  const range = tag('input', style) as HTMLInputElement;
+  range.type = 'range';
+  range.min = min.toString();
+  range.max = max.toString();
+  return range;
+};
+
+function createFragment(model, _onchange: (val: number, e: Event) => void) {
+  const rangePartial = () => {
+    const range = RANGE(
+      0,
+      5,
+      `
+      width: 600px;
+      margin-left: 170px;
+    `,
+    );
+
+    range.value = model;
+    range.autofocus = true;
+    range.onchange = (e: any) => {
+      const strValue = e.target.value;
+      const val = Number(strValue);
+      _onchange(val, e);
+    };
+
+    return LABEL('', [range]);
+  };
+
+  return DIV('margin-bottom:20px;', [rangePartial(), DIV('')]);
 }
 
 export { createFragment };
