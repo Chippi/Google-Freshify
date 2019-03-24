@@ -20,7 +20,7 @@ chrome.webRequest.onBeforeRequest.addListener(
   details => {
     const storage = localStorage.getItem(STORAGE_TIME_KEY);
     console.log('background get time key', storage);
-    if (!storage) {
+    if (storage === null) {
       return;
     }
 

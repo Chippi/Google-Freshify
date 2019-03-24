@@ -22,7 +22,7 @@ mapToQdr.forEach((val, key) => {
 
 const fragment = createFragment(k, e => {
   const timeParam = getGoogleTimeParam(e);
-  console.log('nu är det jag som bestämmer!', timeParam);
+  console.log('Changed range value and got this google param:', timeParam);
 
   chrome.runtime.sendMessage({ timeParam, type: 'SEND.ROLING.TIME' }, response => {
     const lastError = chrome.runtime.lastError;
@@ -30,9 +30,7 @@ const fragment = createFragment(k, e => {
       console.log('ERRRRRRRR', lastError);
       return;
     }
-    if (response.storageData) {
-      localStorage.setItem(STORAGE_TIME_KEY, response.storageData);
-    }
+    localStorage.setItem(STORAGE_TIME_KEY, response.storageData);
     if (response.reload) {
       window.location.reload();
     }

@@ -6,7 +6,7 @@ const RANGE = (style, model, onchange) => {
   const range = tag('input', style) as HTMLInputElement;
   range.type = 'range';
   range.min = '0';
-  range.max = '4';
+  range.max = '5';
   range.value = model;
   range.autofocus = true;
   range.onchange = (e: any) => {
@@ -28,10 +28,20 @@ function tag(tagName: string, style: string = '', children?: HTMLElement[]) {
   return el;
 }
 
-const rangePartial = (model, onchange) => LABEL('', [RANGE('width: 100%', model, onchange)]);
+const rangePartial = (model, onchange) =>
+  LABEL('', [
+    RANGE(
+      `
+width: 600px;
+margin-left: 170px;
+`,
+      model,
+      onchange,
+    ),
+  ]);
 
 function createFragment(model, callback) {
-  return DIV('border: 1px solid blue', [rangePartial(model, callback), DIV('')]);
+  return DIV('margin-bottom:20px;', [rangePartial(model, callback), DIV('')]);
 }
 
 export { createFragment };
