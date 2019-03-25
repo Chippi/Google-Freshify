@@ -26,14 +26,7 @@ const RANGE = (min: number, max: number, style: string) => {
 
 function createFragment(model, onChange: (val: number, e?: Event) => void) {
   const rangePartial = () => {
-    const range = RANGE(
-      0,
-      5,
-      `
-      width: 630px;
-      margin-left: 150px;
-    `,
-    );
+    const range = RANGE(0, 5, ``);
 
     range.value = model;
     range.onchange = (e: any) => {
@@ -45,7 +38,7 @@ function createFragment(model, onChange: (val: number, e?: Event) => void) {
     return LABEL('', [range]);
   };
 
-  return DIV('margin-bottom:20px;', [rangePartial(), DIV('')]);
+  return DIV('', [rangePartial(), DIV('')]);
 }
 
 export { createFragment };

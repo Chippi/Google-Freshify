@@ -38,6 +38,8 @@ const onRangeChange = (rangeVal: number) => {
 };
 
 const fragment = createFragment(k, onRangeChange);
+fragment.classList.add('yolo__content');
+
 topNavElement.before(fragment);
 
 console.log('YoloFilter should have been inserted now');

@@ -4,7 +4,11 @@ body {
 
 .yolo {
     &__content {
-        height: 100px;
-        background: lightgray;
+        margin-left: 150px;
+        height: 60px;
+        
+        input {
+            width: 630px;
+        }
     }
 }
