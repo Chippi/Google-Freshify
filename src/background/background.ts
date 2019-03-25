@@ -27,6 +27,12 @@ chrome.webRequest.onBeforeRequest.addListener(
     const [url, qs] = details.url.split('?');
 
     const params = parseQuerystring(qs);
+
+    const isImageSearch = params.tbm === 'isch';
+    if (isImageSearch) {
+      return;
+    }
+
     params.tbs = storage;
 
     const complete = url + '?' + toQuerystring(params);

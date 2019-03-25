@@ -24,7 +24,7 @@ const RANGE = (min: number, max: number, style: string) => {
   return range;
 };
 
-function createFragment(model, _onchange: (val: number, e: Event) => void) {
+function createFragment(model, onChange: (val: number, e?: Event) => void) {
   const rangePartial = () => {
     const range = RANGE(
       0,
@@ -40,7 +40,7 @@ function createFragment(model, _onchange: (val: number, e: Event) => void) {
     range.onchange = (e: any) => {
       const strValue = e.target.value;
       const val = Number(strValue);
-      _onchange(val, e);
+      onChange(val, e);
     };
 
     return LABEL('', [range]);

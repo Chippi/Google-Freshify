@@ -20,8 +20,8 @@ mapToQdr.forEach((val, key) => {
   }
 });
 
-const fragment = createFragment(k, e => {
-  const timeParam = getGoogleTimeParam(e);
+const onRangeChange = (rangeVal: number) => {
+  const timeParam = getGoogleTimeParam(rangeVal);
   console.log('Changed range value and got this google param:', timeParam);
 
   chrome.runtime.sendMessage({ timeParam, type: 'SEND.ROLING.TIME' }, response => {
@@ -35,8 +35,9 @@ const fragment = createFragment(k, e => {
       window.location.reload();
     }
   });
-});
-console.log('nu jävlar skjuter vi in den', appBarElement, fragment);
+};
+
+const fragment = createFragment(k, onRangeChange);
 appBarElement.after(fragment);
 
-console.log('done');
+console.log('YoloFilter should have been inserted now');
