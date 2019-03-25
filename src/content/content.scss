@@ -1,24 +1,26 @@
 $google-blue: #1A73E8;
 
-body {
-}
-
 .yolo {
     &__content {
-        margin-left: 150px;
-        height: 50px;
-        width: 630px;
+        margin-left: 170px;
+        height: 80px;
+        width: 590px;
         
         input[type=range]{
+            display: block;
             -webkit-appearance: none;
             width: 100%;
+            padding: 20px 0 30px;
+            cursor: pointer;
+            background: transparent;
             
             &::-webkit-slider-runnable-track {
                 width: 300px;
-                height: 5px;
-                background: #ddd;
+                height: 2px;
+                background: #dfe1e5;
                 border: none;
-                border-radius: 3px;
+                border-radius: 4px;
+                z-index: 5;
             }
             
             &::-webkit-slider-thumb  {
@@ -28,11 +30,37 @@ body {
                 width: 16px;
                 border-radius: 50%;
                 background: $google-blue;;
-                margin-top: -5px;
+                margin-top: -7px;
             }
             
             &:focus {
                 outline: none;
+            }
+        }
+    }
+    
+    &__labels {
+        display: flex;
+        justify-content: space-between;
+        width: 634px;
+        margin: -49px 0 0 -20px;
+        pointer-events: none;
+        
+        p {
+            width: 60px;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            font-size: 11px;
+            color: #777;
+            
+            &::before {
+                content: '';
+                width: 10px;
+                height: 10px;
+                border-radius: 100%;
+                margin-bottom: 6px;
+                background: #dfe1e5;
             }
         }
     }
