@@ -39,6 +39,6 @@ chrome.webRequest.onBeforeRequest.addListener(
     console.log('onBeforeRequest end', params, complete);
     return { redirectUrl: complete };
   },
-  { urls: ['https://www.google.com/search*'] },
+  { urls: ['https://*.google.com/search*'] },
   ['blocking'],
 );
