@@ -30,13 +30,12 @@ function createFragment(model, onChange: (val: number, e?: Event) => void) {
       0,
       5,
       `
-      width: 600px;
-      margin-left: 170px;
+      width: 630px;
+      margin-left: 150px;
     `,
     );
 
     range.value = model;
-    range.autofocus = true;
     range.onchange = (e: any) => {
       const strValue = e.target.value;
       const val = Number(strValue);
