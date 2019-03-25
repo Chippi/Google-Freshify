@@ -2,7 +2,7 @@ import './content.scss';
 
 console.log('hello from content');
 
-const appBarElement = document.querySelector('#appbar') as HTMLElement;
+const topNavElement = document.querySelector('#top_nav') as HTMLElement;
 
 import { STORAGE_TIME_KEY } from '../storage';
 import { createFragment } from './fragment';
@@ -38,6 +38,6 @@ const onRangeChange = (rangeVal: number) => {
 };
 
 const fragment = createFragment(k, onRangeChange);
-appBarElement.after(fragment);
+topNavElement.before(fragment);
 
 console.log('YoloFilter should have been inserted now');
