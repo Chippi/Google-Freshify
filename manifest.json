@@ -8,14 +8,13 @@
       "js": ["content.js"],
       "css": ["content.css"],
       "all_frames": true,
-      "run_at": "document_end"
+      "run_at": "document_start"
     }
   ],
   "background": {
     "scripts": ["background.js"],
     "persistent": true
   },
-  "web_accessible_resources": ["content.html"],
   "permissions": ["https://*.google.com/search*", "webRequest", "webRequestBlocking"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
