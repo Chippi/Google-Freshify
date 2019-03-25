@@ -1,3 +1,4 @@
+$google-blue: #1A73E8;
 
 body {
 }
@@ -5,10 +6,34 @@ body {
 .yolo {
     &__content {
         margin-left: 150px;
-        height: 60px;
+        height: 50px;
+        width: 630px;
         
-        input {
-            width: 630px;
+        input[type=range]{
+            -webkit-appearance: none;
+            width: 100%;
+            
+            &::-webkit-slider-runnable-track {
+                width: 300px;
+                height: 5px;
+                background: #ddd;
+                border: none;
+                border-radius: 3px;
+            }
+            
+            &::-webkit-slider-thumb  {
+                -webkit-appearance: none;
+                border: none;
+                height: 16px;
+                width: 16px;
+                border-radius: 50%;
+                background: $google-blue;;
+                margin-top: -5px;
+            }
+            
+            &:focus {
+                outline: none;
+            }
         }
     }
 }
