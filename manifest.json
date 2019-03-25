@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "content_scripts": [
     {
-      "matches": ["https://*.google.com/search*"],
+      "matches": ["https://*/search*"],
       "js": ["content.js"],
       "css": ["content.css"],
       "all_frames": true,
@@ -16,6 +16,6 @@
     "persistent": true
   },
   "web_accessible_resources": ["content.html"],
-  "permissions": ["https://*.google.com/search*", "webRequest", "webRequestBlocking"],
+  "permissions": ["https://*.google*", "webRequest", "webRequestBlocking"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
