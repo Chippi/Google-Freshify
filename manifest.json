@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "content_scripts": [
     {
-      "matches": ["https://*.google.com/search*"],
+      "matches": ["https://*/*"],
+      "include_globs": ["https://www.google.*/search*"],
       "js": ["content.js"],
       "css": ["content.css"],
       "all_frames": true,
