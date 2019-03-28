@@ -23,7 +23,7 @@ const RANGE = (min: number, max: number, style: string) => {
   return range;
 };
 
-const createLabels = () =>
+const labelsPartial = () =>
   DIV('yolo__labels', [
     P('', ['1 hour']),
     P('', ['1 day']),
@@ -47,5 +47,5 @@ export function createFragment(model, onChange: (val: number, e?: Event) => void
     return range;
   };
 
-  return DIV('', [rangePartial(), createLabels()]);
+  return DIV('', [rangePartial(), labelsPartial()]);
 }
