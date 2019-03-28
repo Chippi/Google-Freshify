@@ -1,24 +1,20 @@
-function tag(tagName: string, style: string = '', children?: HTMLElement[]) {
+type ElementOrText = HTMLElement | string;
+
+function tag(tagName: string, style: string = '', children?: ElementOrText[]) {
   const el = document.createElement(tagName);
-  el.setAttribute('style', style);
+  if (style) style.includes(':') ? el.setAttribute('style', style) : el.classList.add(style);
+
   if (children) {
     children.forEach(e => {
-      el.appendChild(e);
+      el.append(e);
     });
   }
 
   return el;
 }
 
-const createPTag = (title: string) => {
-  const pTag = tag('p');
-  pTag.innerText = title;
-
-  return pTag;
-};
-
-const DIV = (style: string, children?: HTMLElement[]) => tag('div', style, children);
-
+const DIV = (style: string, children?: ElementOrText[]) => tag('div', style, children);
+const P = (style: string, children?: ElementOrText[]) => tag('p', style, children);
 const RANGE = (min: number, max: number, style: string) => {
   const range = tag('input', style) as HTMLInputElement;
   range.type = 'range';
@@ -27,7 +23,17 @@ const RANGE = (min: number, max: number, style: string) => {
   return range;
 };
 
-function createFragment(model, onChange: (val: number, e?: Event) => void) {
+const createLabels = () =>
+  DIV('yolo__labels', [
+    P('', ['1 hour']),
+    P('', ['1 day']),
+    P('', ['1 week']),
+    P('', ['1 month']),
+    P('', ['1 year']),
+    P('', ['Any time']),
+  ]);
+
+export function createFragment(model, onChange: (val: number, e?: Event) => void) {
   const rangePartial = () => {
     const range = RANGE(0, 5, ``);
 
@@ -43,19 +49,3 @@ function createFragment(model, onChange: (val: number, e?: Event) => void) {
 
   return DIV('', [rangePartial(), createLabels()]);
 }
-
-const createLabels = () => {
-  const wrapper = tag('div');
-  wrapper.classList.add('yolo__labels');
-
-  wrapper.appendChild(createPTag('1 hour'));
-  wrapper.appendChild(createPTag('1 day'));
-  wrapper.appendChild(createPTag('1 week'));
-  wrapper.appendChild(createPTag('1 month'));
-  wrapper.appendChild(createPTag('1 year'));
-  wrapper.appendChild(createPTag('Any time'));
-
-  return wrapper;
-};
-
-export { createFragment };
