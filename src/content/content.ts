@@ -1,21 +1,21 @@
 import './content.scss';
 
 import { STORAGE_TIME_KEY } from '../storage';
-import { createFragment } from './fragment';
 import { getGoogleTimeParam, mapToQdr } from './url';
+import { dom } from './dom';
 
 console.log('hello from content');
 
-const googleTimeParam = localStorage.getItem(STORAGE_TIME_KEY);
+const storedTimeParam = localStorage.getItem(STORAGE_TIME_KEY);
 
-console.log('googleTimeParam', googleTimeParam);
+console.log('googleTimeParam', storedTimeParam);
 
-let k;
-mapToQdr.forEach((val, key) => {
-  console.log(123, key, val);
+let rangeValue;
+mapToQdr.forEach((qdr, rangeStep) => {
+  console.log(123, rangeStep, qdr);
 
-  if (val === googleTimeParam) {
-    k = key;
+  if (qdr === storedTimeParam) {
+    rangeValue = rangeStep;
   }
 });
 
@@ -40,7 +40,7 @@ const init = () => {
   console.log('init - DOMContentLoaded');
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
 
-  const fragment = createFragment(k, onRangeChange);
+  const fragment = dom(rangeValue, onRangeChange);
   fragment.classList.add('yolo__content');
 
   topNavElement.before(fragment);
