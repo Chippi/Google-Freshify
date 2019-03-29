@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener(
   (request: { type: string; timeParam: string }, sender, sendResponse) => {
     if (request.type === 'SEND.ROLING.TIME') {
       localStorage.setItem(STORAGE_TIME_KEY, request.timeParam);
-      console.log('background Stored time key', request.timeParam);
+      console.log('background Stored, request.timeParam', request.timeParam);
     }
     sendResponse({
       reload: true,
@@ -19,25 +19,21 @@ chrome.runtime.onMessage.addListener(
 chrome.webRequest.onBeforeRequest.addListener(
   details => {
     const storage = localStorage.getItem(STORAGE_TIME_KEY);
-    console.log('background get time key', storage);
     if (storage === null) {
       return;
     }
-
     const [url, qs] = details.url.split('?');
-
-    const params = parseQuerystring(qs);
-
-    const isImageSearch = params.tbm === 'isch';
+    const params = new URLSearchParams(qs);
+    const isImageSearch = params.get('tbm') === 'isch';
     if (isImageSearch) {
       return;
     }
 
-    params.tbs = storage;
+    params.set('tbs', storage);
 
-    const complete = url + '?' + toQuerystring(params);
-    console.log('onBeforeRequest end', params, complete);
-    return { redirectUrl: complete };
+    const redirectUrl = url + '?' + params.toString();
+    console.log('onBeforeRequest end', params, redirectUrl);
+    return { redirectUrl };
   },
   { urls: ['https://*.google.com/search*'] },
   ['blocking'],

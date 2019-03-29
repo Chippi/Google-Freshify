@@ -24,5 +24,5 @@ export function dom(model: number, onChange: (val: number, e?: Event) => void) {
     return range;
   };
 
-  return DIV('', [rangePartial(), labelsPartial()]);
+  return DIV('yolo__content', [rangePartial(), labelsPartial()]);
 }
