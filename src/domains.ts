@@ -1,5 +1,5 @@
 // https://infogalactic.com/info/List_of_Google_domains
-const googleDomains = [
+export const googleDomains = [
   'com',
   'ac',
   'ad',
@@ -201,5 +201,3 @@ const googleDomains = [
   'zm',
   'zw',
 ];
-
-module.exports = googleDomains;
