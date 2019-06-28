@@ -4,7 +4,7 @@ import { DIV, P, RANGE } from './domHelpers';
 const labelsPartial = () =>
   DIV('yolo__labels', [
     P('big-dot', 'Today'),
-    ...Array.from({ length: DAYS - 1 }, () => P()),
+    ...Array.from({ length: DAYS }, () => P()),
     P('big-dot', '1 week'),
     ...Array.from({ length: WEEKS - 1 }, () => P()),
     P('big-dot', '1 month'),

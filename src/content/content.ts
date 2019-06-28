@@ -6,11 +6,11 @@ import { dom } from './dom';
 const storedTimeParam = localStorage.getItem(STORAGE_TIME_KEY);
 const selectedStep = storedTimeParam;
 const onRangeChange = (rangeVal: number) => {
-    console.log('range value', rangeVal);
+  console.log('range value', rangeVal);
 
-    console.log('Changed range value and got this param:', rangeVal);
+  console.log('Changed range value and got this param:', rangeVal);
 
-    chrome.runtime.sendMessage({ timeParam: rangeVal, type: 'SEND.ROLING.TIME' }, response => {
+  chrome.runtime.sendMessage({ timeParam: rangeVal, type: 'SEND.ROLING.TIME' }, response => {
     const lastError = chrome.runtime.lastError;
     if (lastError) {
       console.error('ERRRRRRRR', lastError);

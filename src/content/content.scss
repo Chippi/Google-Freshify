@@ -1,18 +1,24 @@
 $google-blue: #1A73E8;
+$content-width: 596px;
 
 .yolo {
     &__content {
-        margin-left: 170px;
-        height: 80px;
-        width: 590px;
+        margin-left: 168px;
+        height: 60px;
+        width: $content-width;
+        position: relative;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
 
         input[type=range] {
             display: block;
             -webkit-appearance: none;
             width: 100%;
-            padding: 20px 0 30px;
             cursor: pointer;
             background: transparent;
+            margin: 0;
+            padding:20px 0;
 
             &::-webkit-slider-runnable-track {
                 width: 300px;
@@ -31,7 +37,7 @@ $google-blue: #1A73E8;
                 border-radius: 50%;
                 background: $google-blue;
                 ;
-                margin-top: -7px;
+                margin-top: -7.5px;
             }
 
             &:focus {
@@ -42,32 +48,40 @@ $google-blue: #1A73E8;
 
     &__labels {
         display: flex;
-        justify-content: space-between;
-        width: 634px;
-        margin: -49px 0 0 -20px;
         pointer-events: none;
+        position: absolute;
+        top: 26px;
+        left: 0px;
+        right: 0px;
+        bottom: 0;
 
         p {
-            width: 60px;
+            width: calc(#{$content-width} / 32);
             align-items: center;
             display: flex;
             flex-direction: column;
             font-size: 11px;
             color: #777;
+            flex-shrink: 0;
+            position: relative;
+            margin: 0;
+            white-space: nowrap;
 
             &::before {
                 content: '';
                 width: 6px;
                 height: 6px;
                 border-radius: 100%;
-                margin-bottom: 6px;
                 background: #dfe1e5;
+                display: block;
             }
 
             &.big-dot {
                 &::before {
                     width: 10px;
                     height: 10px;
+                    margin-top: -2px;
+                    margin-bottom: 5px;
                 }
             }
         }
