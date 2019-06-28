@@ -1,4 +1,4 @@
-import { DateTime, DurationObject, DurationObjectUnits } from 'luxon';
+import { DateTime, DurationObjectUnits } from 'luxon';
 import * as domains from '../domains.js';
 import { STORAGE_TIME_KEY } from '../storage';
 import { DAYS, MONTHS, WEEKS, YEARS } from './../CONSTANTS';

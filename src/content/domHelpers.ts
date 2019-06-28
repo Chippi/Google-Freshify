@@ -12,7 +12,7 @@ function tag(tagName: string, style: string = '', children?: ElementOrText) {
 }
 
 export const DIV = (style: string, children?: ElementOrText) => tag('div', style, children);
-export const P = (style: string, children?: ElementOrText) => tag('p', style, children);
+export const P = (style?: string, children?: ElementOrText) => tag('p', style, children);
 export const RANGE = (min: number, max: number, style?: string) => {
   const range = tag('input', style) as HTMLInputElement;
   range.type = 'range';
