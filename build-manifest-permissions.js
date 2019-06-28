@@ -13,6 +13,12 @@ const writeSettings = data => {
 
   const settings = {
     ...data,
+    content_scripts: [
+      {
+        ...data.content_scripts[0],
+        matches: domainsPermissions,
+      },
+    ],
     permissions: [...domainsPermissions, 'webRequest', 'webRequestBlocking'],
   };
 
