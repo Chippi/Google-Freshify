@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DateTime, DurationObject, DurationObjectUnits } from 'luxon';
 import * as domains from '../domains.js';
 import { STORAGE_TIME_KEY } from '../storage';
 import { DAYS, MONTHS, WEEKS, YEARS } from './../CONSTANTS';
@@ -52,36 +52,32 @@ function calculateDate(rangeVal: number): Date | null {
 
   if (rangeVal <= DAYS) {
     const days = rangeVal;
-    console.log('minus days', days);
-    return DateTime.fromJSDate(date)
-      .minus({ days })
-      .toJSDate();
+    return dateMinus(date, { days });
   }
 
   if (rangeVal <= DAYS + WEEKS) {
     const weeks = rangeVal - DAYS;
-    console.log('minus weeks', weeks);
-    return DateTime.fromJSDate(date)
-      .minus({ weeks })
-      .toJSDate();
+    return dateMinus(date, { weeks });
   }
 
   if (rangeVal <= DAYS + WEEKS + MONTHS) {
     const months = rangeVal - DAYS - WEEKS;
-    console.log('minus months', months);
-    return DateTime.fromJSDate(date)
-      .minus({ months })
-      .toJSDate();
+    return dateMinus(date, { months });
   }
 
   if (rangeVal <= DAYS + WEEKS + MONTHS + YEARS) {
     const years = rangeVal - DAYS - WEEKS - MONTHS;
-    console.log('minus years', years);
-    return DateTime.fromJSDate(date)
-      .minus({ years })
-      .toJSDate();
+    return dateMinus(date, { years });
   }
 
-  console.log('minus nothing ANYTIME');
+  console.log('minus nothing; ANYTIME!');
   return null;
+}
+
+function dateMinus(date: Date, duration: DurationObjectUnits): Date {
+  console.log('minus', duration);
+
+  return DateTime.fromJSDate(date)
+    .minus(duration)
+    .toJSDate();
 }
