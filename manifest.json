@@ -16,6 +16,6 @@
     "scripts": ["background.js"],
     "persistent": true
   },
-  "permissions": ["https://*.google.com/search*", "webRequest", "webRequestBlocking"],
+  "permissions": ["https://*.google.com/search*", "https://*.google.se/search*", "webRequest", "webRequestBlocking"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

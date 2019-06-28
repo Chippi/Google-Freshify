@@ -1,4 +1,3 @@
-import { parseQuerystring, toQuerystring } from '../content/url';
 import { STORAGE_TIME_KEY } from '../storage';
 
 console.log('Hello from background');
