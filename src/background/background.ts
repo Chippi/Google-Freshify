@@ -1,4 +1,7 @@
+import * as domains from '../domains.js';
 import { STORAGE_TIME_KEY } from '../storage';
+
+console.log(domains);
 
 console.log('Hello from background');
 
@@ -34,6 +37,6 @@ chrome.webRequest.onBeforeRequest.addListener(
     console.log('onBeforeRequest end', params, redirectUrl);
     return { redirectUrl };
   },
-  { urls: ['https://*.google.com/search*', 'https://*.google.se/search*'] },
+  { urls: domains.map(domain => `https://*.google.${domain}/search*`) },
   ['blocking'],
 );

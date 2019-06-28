@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config webpack.config.js --progress --watch"
+    "dev": "node build-manifest-permissions.js && webpack --config webpack.config.js --progress --watch"
   },
   "author": "",
   "license": "ISC"
