@@ -1,8 +1,8 @@
 import './content.scss';
 
 import { STORAGE_TIME_KEY } from '../storage';
-import { getGoogleTimeParam, mapToQdr } from './url';
 import { dom } from './dom';
+import { getGoogleTimeParam, mapToQdr } from './url';
 
 const storedTimeParam = localStorage.getItem(STORAGE_TIME_KEY);
 const selectedStep = Array.from(mapToQdr.values()).indexOf(storedTimeParam);
