@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "luxon": "^1.16.0"
+  },
   "devDependencies": {
     "@types/chrome": "0.0.86",
+    "@types/luxon": "^1.15.1",
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^3.0.0",
     "mini-css-extract-plugin": "^0.7.0",

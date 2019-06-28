@@ -2,17 +2,15 @@ import './content.scss';
 
 import { STORAGE_TIME_KEY } from '../storage';
 import { dom } from './dom';
-import { getGoogleTimeParam, mapToQdr } from './url';
 
 const storedTimeParam = localStorage.getItem(STORAGE_TIME_KEY);
-const selectedStep = Array.from(mapToQdr.values()).indexOf(storedTimeParam);
-
-console.log('googleTimeParam', storedTimeParam, 'selectedStep', selectedStep);
+const selectedStep = storedTimeParam;
 const onRangeChange = (rangeVal: number) => {
-  const timeParam = getGoogleTimeParam(rangeVal);
-  console.log('Changed range value and got this google param:', timeParam);
+    console.log('range value', rangeVal);
 
-  chrome.runtime.sendMessage({ timeParam, type: 'SEND.ROLING.TIME' }, response => {
+    console.log('Changed range value and got this param:', rangeVal);
+
+    chrome.runtime.sendMessage({ timeParam: rangeVal, type: 'SEND.ROLING.TIME' }, response => {
     const lastError = chrome.runtime.lastError;
     if (lastError) {
       console.error('ERRRRRRRR', lastError);

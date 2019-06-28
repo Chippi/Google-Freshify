@@ -1,5 +1,7 @@
+import { DateTime } from 'luxon';
 import * as domains from '../domains.js';
 import { STORAGE_TIME_KEY } from '../storage';
+import { DAYS, MONTHS, WEEKS, YEARS } from './../CONSTANTS';
 
 console.log(domains);
 
@@ -30,13 +32,56 @@ chrome.webRequest.onBeforeRequest.addListener(
     if (isImageSearch) {
       return;
     }
+    const date = calculateDate(parseFloat(storage));
 
-    params.set('tbs', storage);
+    if (date) {
+      params.set('tbs', `cdr:1,cd_min:${new Intl.DateTimeFormat('en-US').format(date)}`);
+    } else {
+      params.set('tbs', ``);
+    }
 
-    const redirectUrl = url + '?' + params.toString();
-    console.log('onBeforeRequest end', params, redirectUrl);
+    const redirectUrl = `${url}?${params.toString()}`;
     return { redirectUrl };
   },
   { urls: domains.map(domain => `https://*.google.${domain}/search*`) },
   ['blocking'],
 );
+
+function calculateDate(rangeVal: number): Date | null {
+  const date = new Date();
+
+  if (rangeVal <= DAYS) {
+    const days = rangeVal;
+    console.log('minus days', days);
+    return DateTime.fromJSDate(date)
+      .minus({ days })
+      .toJSDate();
+  }
+
+  if (rangeVal <= DAYS + WEEKS) {
+    const weeks = rangeVal - DAYS;
+    console.log('minus weeks', weeks);
+    return DateTime.fromJSDate(date)
+      .minus({ weeks })
+      .toJSDate();
+  }
+
+  if (rangeVal <= DAYS + WEEKS + MONTHS) {
+    const months = rangeVal - DAYS - WEEKS;
+    console.log('minus months', months);
+    return DateTime.fromJSDate(date)
+      .minus({ months })
+      .toJSDate();
+  }
+
+  if (rangeVal <= DAYS + WEEKS + MONTHS + YEARS) {
+    const years = rangeVal - DAYS - WEEKS - MONTHS;
+    console.log('minus years', years);
+    return DateTime.fromJSDate(date)
+      .minus({ years })
+      .toJSDate();
+  }
+
+  console.log('minus nothing ANYTIME');
+  return null;
+}
