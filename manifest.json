@@ -34,8 +34,6 @@
     "https://*.google.fi/search*",
     "https://*.google.no/search*",
     "https://*.google.dk/search*",
-    "https://*.google.fr/search*",
-    "https://*.google.de/search*",
     "webRequest",
     "webRequestBlocking"
   ]
