@@ -1,19 +1,17 @@
 import './content.scss';
 
+import { DAYS, MONTHS, SEND_ROLLING_TIME, totalSteps, WEEKS } from '../CONSTANTS';
 import { STORAGE_TIME_KEY } from '../storage';
 import { dom } from './dom';
+import { parser } from './parser';
 
-const storedTimeParam = localStorage.getItem(STORAGE_TIME_KEY);
-const selectedStep = storedTimeParam;
-const onRangeChange = (rangeVal: number) => {
-  console.log('range value', rangeVal);
+document.addEventListener('DOMContentLoaded', () => init());
 
-  console.log('Changed range value and got this param:', rangeVal);
-
-  chrome.runtime.sendMessage({ timeParam: rangeVal, type: 'SEND.ROLING.TIME' }, response => {
+function sendToBackground(step: number) {
+  chrome.runtime.sendMessage({ timeParam: step, type: SEND_ROLLING_TIME }, response => {
     const lastError = chrome.runtime.lastError;
     if (lastError) {
-      console.error('ERRRRRRRR', lastError);
+      console.error('Error', lastError);
       return;
     }
     localStorage.setItem(STORAGE_TIME_KEY, response.storageData);
@@ -21,15 +19,25 @@ const onRangeChange = (rangeVal: number) => {
       window.location.reload();
     }
   });
-};
+}
+function init() {
+  const selectedStep = ((localStorage.getItem(STORAGE_TIME_KEY) as any) as number) || totalSteps();
 
-const init = () => {
-  console.log('init - DOMContentLoaded');
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
-  const fragment = dom(selectedStep, onRangeChange);
+  const fragment = dom(selectedStep, (rangeVal: number) => sendToBackground(rangeVal));
   topNavElement.before(fragment);
 
-  console.log('Range should have been inserted now');
-};
-
-document.addEventListener('DOMContentLoaded', () => init());
+  const qInput = document.querySelector('[name="q"]');
+  qInput.addEventListener('keypress', (e: KeyboardEvent) => {
+    const key = e.which || e.keyCode;
+    const ENTER = 13;
+    if (key === ENTER) {
+      const input = e.target as HTMLInputElement;
+      const parsed = parser(input.value);
+      if (parsed) {
+        input.value = input.value.slice(0, parsed.hit.length * -1);
+        sendToBackground(parsed.step);
+      }
+    }
+  });
+}

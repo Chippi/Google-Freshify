@@ -14,12 +14,12 @@ const labelsPartial = () =>
     P('big-dot', 'Anytime'),
   ]);
 
-export function dom(model: string, onChange: (val: number, e?: Event) => void) {
+export function dom(rangeValue: number, onChange: (val: number, e?: Event) => void) {
   const rangePartial = () => {
     const possibleSteps = DAYS + WEEKS + MONTHS + YEARS + ANYTIME;
     const range = RANGE(0, possibleSteps);
 
-    range.value = model;
+    range.value = rangeValue.toString();
     range.onchange = (e: Event) => {
       const strValue = (e.target as HTMLInputElement).value;
       const val = Number(strValue);
