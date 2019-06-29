@@ -2,7 +2,7 @@ import './content.scss';
 
 import { DAYS, MONTHS, SEND_ROLLING_TIME, totalSteps, WEEKS } from '../CONSTANTS';
 import { STORAGE_TIME_KEY } from '../storage';
-import { dom } from './dom';
+import { createDom } from './dom';
 import { parser } from './parser';
 
 document.addEventListener('DOMContentLoaded', () => init());
@@ -24,7 +24,8 @@ function init() {
   const selectedStep = ((localStorage.getItem(STORAGE_TIME_KEY) as any) as number) || totalSteps();
 
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
-  const fragment = dom(selectedStep, (rangeVal: number) => sendToBackground(rangeVal));
+  const rangeOnChange = (rangeVal: number) => sendToBackground(rangeVal);
+  const fragment = createDom(selectedStep, rangeOnChange);
   topNavElement.before(fragment);
 
   const qInput = document.querySelector('[name="q"]');

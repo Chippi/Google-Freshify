@@ -1,5 +1,7 @@
-import { ANYTIME, DAYS, MONTHS, totalSteps, WEEKS, YEARS } from '../CONSTANTS';
+import { DAYS, MONTHS, totalSteps, WEEKS, YEARS } from '../CONSTANTS';
 import { DIV, P, RANGE } from './domHelpers';
+
+type RangeOnChange = (val: number, e?: Event) => void;
 
 const labelsPartial = () =>
   DIV('yolo__labels', [
@@ -14,20 +16,15 @@ const labelsPartial = () =>
     P('big-dot', 'Anytime'),
   ]);
 
-export function dom(rangeValue: number, onChange: (val: number, e?: Event) => void) {
-  const rangePartial = () => {
-    const possibleSteps = DAYS + WEEKS + MONTHS + YEARS + ANYTIME;
-    const range = RANGE(0, possibleSteps);
-
-    range.value = rangeValue.toString();
-    range.onchange = (e: Event) => {
-      const strValue = (e.target as HTMLInputElement).value;
-      const val = Number(strValue);
-      onChange(val, e);
-    };
-
-    return range;
+const rangePartial = (rangeValue: number, onChange: RangeOnChange) => {
+  const range = RANGE(0, totalSteps(), rangeValue);
+  range.onchange = (e: Event) => {
+    const strValue = (e.target as HTMLInputElement).value;
+    const val = Number(strValue);
+    onChange(val, e);
   };
-  console.log('step count', labelsPartial().children.length, totalSteps());
-  return DIV('yolo__content', [rangePartial(), labelsPartial()]);
+  return range;
+};
+export function createDom(rangeValue: number, onChange: RangeOnChange) {
+  return DIV('yolo__content', [rangePartial(rangeValue, onChange), labelsPartial()]);
 }
