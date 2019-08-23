@@ -1,0 +1,64 @@
+@import 'base', 'helpers';
+
+$pink: #daabab;
+
+.wrapper {
+    width: 100%;
+    background: $pink;
+    flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+}
+
+.content {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    width: 600px;
+    min-height: 600px;
+    padding: 20px 40px;    
+}
+
+.header {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    
+    img {
+        width: 100px;
+    }
+}
+
+.box-heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.box {
+    padding: 20px;
+    background: lighten($pink, 5%);
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.clear-input {
+    display: flex;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    
+    input {
+        margin: 0 10px;
+        background: 0;
+        border: 0;
+        border-bottom: 1px solid black;
+        outline: 0;
+        font-weight: 600;
+        font-size: 16px;
+        width: 80px;
+        text-align: center;
+    }
+}
+

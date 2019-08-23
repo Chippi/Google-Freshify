@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <link rel="stylesheet"
+          href="./popup.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="content">
+
+            <div class="header">
+                <img src="./logo.png"
+                     alt="">
+
+                <h1>
+                    Google Freshify
+                </h1>
+            </div>
+
+            <div class="box-heading">
+                <h2>
+                    Quick commands
+                </h2>
+            </div>
+
+            <div class="box">
+                <p>
+                    You can modify the date filter by using quick text commands.
+                    For example, you can type
+
+                    <span>
+                        funny cats 1y
+                    </span>
+
+                    to set the filter to 1 year.
+                </p>
+
+                <p class="mt20 small">
+                    Available commands:
+                </p>
+
+                <ul>
+                    <li>
+                        {number}h - filter by hour
+                    </li>
+                    <li>
+                        {number}d - filter by day
+                    </li>
+                    <li>
+                        {number}m - filter by month
+                    </li>
+                    <li>
+                        {number}y - filter by year
+                    </li>
+                </ul>
+
+                <p class="mt20 small">
+                    Example: funny cats 1d
+                </p>
+            </div>
+
+            <div class="box-heading">
+                <h2>
+                    Clear filter
+                </h2>
+            </div>
+
+            <div class="box">
+                <p>
+                    You can decide if you wish to clear the filter options after x amount of minutes. To always
+                    remember, set the field to 0 or empty
+                </p>
+
+                <div class="clear-input">
+                    Filter will be cleared after
+                    <input type="number"
+                           value="0">
+                    minutes.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ const config = {
   entry: {
     content: './src/content/content.ts',
     background: './src/background/background.ts',
+    popup: './src/popup/popup.ts'
   },
   output: {
     filename: '[name].js',
@@ -41,7 +42,7 @@ const config = {
         flatten: true,
       },
       {
-        from: 'src/popup/**',
+        from: 'src/popup/popup.html',
         flatten: true,
       },
     ]),

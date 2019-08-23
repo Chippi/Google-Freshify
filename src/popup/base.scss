@@ -1,0 +1,45 @@
+* {
+    box-sizing: border-box;    
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+h1 {
+    border-bottom: 2px solid black;
+    padding-bottom: 20px;
+    margin: 10px 0;
+    font-weight: 700;
+    font-size: 40px;
+    width: 100%;
+    text-align: center;
+}
+
+h2 {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+p {
+    margin: 0;
+    font-size: 16px;
+    
+    span {
+        font-weight: 700;
+    }
+}
+
+
+ul {
+    padding-left: 30px;
+}
+
+li {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
