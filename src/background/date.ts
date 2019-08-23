@@ -1,4 +1,4 @@
-import { DateTime, DurationObjectUnits } from 'luxon';
+import { DateTime } from 'luxon';
 import { DAYS, MONTHS, totalSteps, WEEKS, YEARS } from '../CONSTANTS';
 const now = new Date();
 
@@ -39,6 +39,5 @@ export function dateToStep(date: Date): number {
 }
 
 function closest(counts: number[], goal: number) {
-    return counts.reduce((prev, curr, index) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
-
+    return counts.reduce((prev, curr) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
 }

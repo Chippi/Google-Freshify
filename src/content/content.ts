@@ -3,7 +3,7 @@ import './content.scss';
 import { SEND_ROLLING_TIME, totalSteps } from '../CONSTANTS';
 
 import { dateToStep, stepToDate } from '../background/date';
-import { STORAGE_TIME_KEY } from '../storage';
+import { durationStorage } from '../storage';
 import { IMessageParams } from '../types';
 import { createDom } from './dom';
 import { parser } from './parser';
@@ -11,17 +11,16 @@ import { parser } from './parser';
 document.addEventListener('DOMContentLoaded', () => init());
 
 function sendToBackground(date?: Date) {
-  console.log(':::::', date);
   const messageParams: IMessageParams = { timeParam: date, type: SEND_ROLLING_TIME };
   chrome.runtime.sendMessage(messageParams, response => {
     const lastError = chrome.runtime.lastError;
     if (lastError) {
       console.error('Error', lastError);
       return;
-      }
+    }
     if (response.storageData) {
-        localStorage.setItem(STORAGE_TIME_KEY, response.storageData);
-      }
+      durationStorage.set(response.storageData);
+    }
 
     if (response.reload) {
       window.location.reload();
@@ -29,16 +28,13 @@ function sendToBackground(date?: Date) {
   });
 }
 function init() {
-  const storage = localStorage.getItem(STORAGE_TIME_KEY);
-  const selectedDate = new Date(storage as any);
-  console.log(selectedDate);
+  const selectedDate = durationStorage.get();
   const selectedStep = dateToStep(selectedDate);
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
 
   const rangeOnChange = (rangeVal: number) => {
     const date = stepToDate(rangeVal);
     if (rangeVal === totalSteps) {
-      console.log('ANYTIUMG');
       sendToBackground();
     }
     return sendToBackground(date);
@@ -55,7 +51,6 @@ function init() {
       const parsed = parser(input.value);
       if (parsed) {
         input.value = input.value.slice(0, parsed.hit.length * -1);
-
         sendToBackground(stepToDate(parsed.step));
       }
     }
