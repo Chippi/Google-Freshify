@@ -19,7 +19,7 @@ const writeSettings = data => {
         matches: domainsPermissions,
       },
     ],
-    permissions: [...domainsPermissions, 'webRequest', 'webRequestBlocking'],
+    permissions: [...domainsPermissions, 'webRequest', 'webRequestBlocking', 'storage'],
   };
 
   fs.writeFile(manifest, JSON.stringify(settings, null, 2), err => {
