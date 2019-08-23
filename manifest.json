@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "YoloFilter",
+  "name": "Google freshify",
   "version": "0.0.4",
   "content_scripts": [
     {

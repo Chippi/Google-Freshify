@@ -4,7 +4,7 @@ import { DIV, P, RANGE } from './domHelpers';
 type RangeOnChange = (val: number, e?: Event) => void;
 
 const labelsPartial = () =>
-  DIV('yolo__labels', [
+  DIV('freshify__labels', [
     P('big-dot', 'Today'),
     ...Array.from({ length: DAYS }, () => P()),
     P('big-dot', '1 week'),
@@ -26,5 +26,5 @@ const rangePartial = (rangeValue: number, onChange: RangeOnChange) => {
   return range;
 };
 export function createDom(rangeValue: number, onChange: RangeOnChange) {
-  return DIV('yolo__content', [rangePartial(rangeValue, onChange), labelsPartial()]);
+  return DIV('freshify__content', [rangePartial(rangeValue, onChange), labelsPartial()]);
 }
