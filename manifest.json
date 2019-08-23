@@ -38,6 +38,7 @@
     "https://*.google.com/search*",
     "https://*.google.se/search*",
     "webRequest",
-    "webRequestBlocking"
+    "webRequestBlocking",
+    "storage"
   ]
 }
