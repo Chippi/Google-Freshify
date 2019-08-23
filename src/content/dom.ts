@@ -17,7 +17,7 @@ const labelsPartial = () =>
   ]);
 
 const rangePartial = (rangeValue: number, onChange: RangeOnChange) => {
-  const range = RANGE(0, totalSteps(), rangeValue);
+  const range = RANGE(0, totalSteps, rangeValue);
   range.onchange = (e: Event) => {
     const strValue = (e.target as HTMLInputElement).value;
     const val = Number(strValue);

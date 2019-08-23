@@ -1,30 +1,48 @@
 import './content.scss';
 
-import { DAYS, MONTHS, SEND_ROLLING_TIME, totalSteps, WEEKS } from '../CONSTANTS';
+import { SEND_ROLLING_TIME, totalSteps } from '../CONSTANTS';
+
+import { dateToStep, stepToDate } from '../background/date';
 import { STORAGE_TIME_KEY } from '../storage';
+import { IMessageParams } from '../types';
 import { createDom } from './dom';
 import { parser } from './parser';
 
 document.addEventListener('DOMContentLoaded', () => init());
 
-function sendToBackground(step: number) {
-  chrome.runtime.sendMessage({ timeParam: step, type: SEND_ROLLING_TIME }, response => {
+function sendToBackground(date?: Date) {
+  console.log(':::::', date);
+  const messageParams: IMessageParams = { timeParam: date, type: SEND_ROLLING_TIME };
+  chrome.runtime.sendMessage(messageParams, response => {
     const lastError = chrome.runtime.lastError;
     if (lastError) {
       console.error('Error', lastError);
       return;
-    }
-    localStorage.setItem(STORAGE_TIME_KEY, response.storageData);
+      }
+    if (response.storageData) {
+        localStorage.setItem(STORAGE_TIME_KEY, response.storageData);
+      }
+
     if (response.reload) {
       window.location.reload();
     }
   });
 }
 function init() {
-  const selectedStep = ((localStorage.getItem(STORAGE_TIME_KEY) as any) as number) || totalSteps();
-
+  const storage = localStorage.getItem(STORAGE_TIME_KEY);
+  const selectedDate = new Date(storage as any);
+  console.log(selectedDate);
+  const selectedStep = dateToStep(selectedDate);
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
-  const rangeOnChange = (rangeVal: number) => sendToBackground(rangeVal);
+
+  const rangeOnChange = (rangeVal: number) => {
+    const date = stepToDate(rangeVal);
+    if (rangeVal === totalSteps) {
+      console.log('ANYTIUMG');
+      sendToBackground();
+    }
+    return sendToBackground(date);
+  };
   const fragment = createDom(selectedStep, rangeOnChange);
   topNavElement.before(fragment);
 
@@ -37,7 +55,8 @@ function init() {
       const parsed = parser(input.value);
       if (parsed) {
         input.value = input.value.slice(0, parsed.hit.length * -1);
-        sendToBackground(parsed.step);
+
+        sendToBackground(stepToDate(parsed.step));
       }
     }
   });

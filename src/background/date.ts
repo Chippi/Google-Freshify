@@ -1,37 +1,44 @@
 import { DateTime, DurationObjectUnits } from 'luxon';
-import { DAYS, MONTHS, WEEKS, YEARS } from '../CONSTANTS';
+import { DAYS, MONTHS, totalSteps, WEEKS, YEARS } from '../CONSTANTS';
+const now = new Date();
 
-export function calculateDate(rangeVal: number): Date | null {
-  const date = new Date();
-
-  if (rangeVal <= DAYS) {
-    const days = rangeVal;
-    return dateMinus(date, { days });
-  }
-
-  if (rangeVal <= DAYS + WEEKS) {
-    const weeks = rangeVal - DAYS;
-    return dateMinus(date, { weeks });
-  }
-
-  if (rangeVal <= DAYS + WEEKS + MONTHS) {
-    const months = rangeVal - DAYS - WEEKS;
-    return dateMinus(date, { months });
-  }
-
-  if (rangeVal <= DAYS + WEEKS + MONTHS + YEARS) {
-    const years = rangeVal - DAYS - WEEKS - MONTHS;
-    return dateMinus(date, { years });
-  }
-
-  console.log('minus nothing; ANYTIME!');
-  return null;
+function getPastDate(unit: string, amount: number): Date {
+  const date = DateTime.fromJSDate(now)
+    .minus({ [unit]: amount })
+    .toJSDate();
+  return date;
 }
 
-function dateMinus(date: Date, duration: DurationObjectUnits): Date {
-  console.log('minus', duration);
+function getPossibleDates() {
+  const possibleSliderDates: Date[] = [new Date(),
+    ...Array.from({ length: DAYS }, (_, i) => getPastDate('days', i + 1 )),
+    ...Array.from({ length: WEEKS }, (_, i) => getPastDate('weeks', i + 1 )),
+    ...Array.from({ length: MONTHS }, (_, i) => getPastDate('months', i + 1 )),
+    ...Array.from({ length: YEARS  }, (_, i) => getPastDate('years', i + 1 )),
+  ];
+  return possibleSliderDates;
+}
 
-  return DateTime.fromJSDate(date)
-    .minus(duration)
-    .toJSDate();
+export function stepToDate(step: number): Date {
+  return getPossibleDates()[step];
+}
+
+export function dateToStep(date: Date): number {
+    if (!date) {
+        return totalSteps;
+    }
+    const dateTime = DateTime.fromJSDate(date);
+    const diffs = getPossibleDates().map((d, i) => {
+    const da = DateTime.fromJSDate(d);
+    return da.diff(dateTime, 'days').toObject().days ;
+  });
+
+    const c = closest(diffs, 0);
+    const index = diffs.indexOf(c);
+    return index;
+}
+
+function closest(counts: number[], goal: number) {
+    return counts.reduce((prev, curr, index) => Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
+
 }

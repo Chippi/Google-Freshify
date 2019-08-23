@@ -6,6 +6,5 @@ export const MONTHS = 11;
 export const YEARS = 10;
 export const ANYTIME = 1;
 
-export function totalSteps() {
-  return DAYS + WEEKS + MONTHS + YEARS + ANYTIME;
-}
+export const totalSteps = DAYS + WEEKS + MONTHS + YEARS + ANYTIME;
+
