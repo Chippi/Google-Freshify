@@ -36,6 +36,14 @@ const config = {
       {
         from: 'manifest.json',
       },
+      {
+        from: 'src/assets/**',
+        flatten: true,
+      },
+      {
+        from: 'src/popup/**',
+        flatten: true,
+      },
     ]),
     new MiniCssExtractPlugin({
       filename: '[name].css',
