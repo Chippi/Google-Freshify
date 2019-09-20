@@ -1,5 +1,3 @@
-$google-blue: #4285f4;
-
 * {
     box-sizing: border-box;    
 }
@@ -12,7 +10,7 @@ body, html {
 }
 
 h1 {
-    border-bottom: 2px solid $google-blue;
+    border-bottom: 2px solid $text-color;
     padding-bottom: 20px;
     margin: 10px 0;
     font-weight: 700;
