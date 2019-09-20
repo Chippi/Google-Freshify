@@ -1,13 +1,15 @@
 @import 'base', 'helpers';
 
-$pink: #dda7a7;
+$google-blue: #4285f4;
+$bg: #252525;
 
 .wrapper {
     width: 100%;
-    background: $pink;
+    background: $bg;
     flex-direction: column;
     display: flex;
     min-height: 100vh;
+    color: $google-blue;
 }
 
 .content {
@@ -38,7 +40,7 @@ $pink: #dda7a7;
 
 .box {
     padding: 20px;
-    background: lighten($pink, 5%);
+    background: lighten($bg, 2%);
     margin-bottom: 10px;
     border-radius: 4px;
 }
@@ -53,10 +55,11 @@ $pink: #dda7a7;
         margin: 0 10px;
         background: 0;
         border: 0;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid $google-blue;
         outline: 0;
         font-weight: 600;
         font-size: 16px;
+        color: $google-blue;
         width: 80px;
         text-align: center;
     }
