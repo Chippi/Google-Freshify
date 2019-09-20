@@ -1,11 +1,9 @@
-import './content.scss';
-
-import { SEND_ROLLING_TIME, totalSteps } from '../CONSTANTS';
-
 import { dateToStep, stepToDate } from '../background/date';
+import { SEND_ROLLING_TIME, totalSteps } from '../CONSTANTS';
 import { durationStorage } from '../storage';
 import { IMessageParams } from '../types';
-import { createDom } from './dom';
+import './content.scss';
+import { animateSliderCircleToSelected, createDom, createSlider, ISliderOption } from './dom';
 import { parser } from './parser';
 
 document.addEventListener('DOMContentLoaded', () => init());
@@ -28,6 +26,9 @@ function sendToBackground(date?: Date) {
   });
 }
 function init() {
+  // POC STUFF
+  initPoc();
+
   const selectedDate = durationStorage.get();
   const selectedStep = dateToStep(selectedDate);
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
@@ -56,3 +57,52 @@ function init() {
     }
   });
 }
+
+// POC STUFF
+const initPoc = () => {
+  const topNavElement = document.querySelector('#top_nav') as HTMLElement;
+
+  const sliderOptions: ISliderOption[] = [
+    {
+      text: 'Today',
+      superItem: true,
+      duration: '1d',
+    },
+    {
+      text: 'Yesterday',
+      duration: '2d',
+    },
+    {
+      text: '3 Days',
+      duration: '3d',
+      isSelected: true,
+    },
+    {
+      text: '4 Days',
+      duration: '4d',
+    },
+    {
+      text: '5 Days',
+      duration: '5d',
+    },
+    {
+      text: '6 Days',
+      duration: '6d',
+    },
+    {
+      text: '7 Days',
+      duration: '7d',
+    },
+    {
+      text: '1 Week',
+      duration: '1w',
+      superItem: true,
+    },
+  ];
+
+  const sliderFragment = createSlider(sliderOptions);
+  topNavElement.before(sliderFragment);
+
+  // animate selectedCircle to right spot after put into DOM
+  animateSliderCircleToSelected(sliderOptions);
+};
