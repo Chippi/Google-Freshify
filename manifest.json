@@ -23,7 +23,13 @@
       "run_at": "document_start",
       "matches": [
         "https://*.google.com/search*",
-        "https://*.google.se/search*"
+        "https://*.google.se/search*",
+        "https://*.google.no/search*",
+        "https://*.google.dk/search*",
+        "https://*.google.fi/search*",
+        "https://*.google.de/search*",
+        "https://*.google.fr/search*",
+        "https://*.google.ca/search*"
       ]
     }
   ],
@@ -37,6 +43,12 @@
   "permissions": [
     "https://*.google.com/search*",
     "https://*.google.se/search*",
+    "https://*.google.no/search*",
+    "https://*.google.dk/search*",
+    "https://*.google.fi/search*",
+    "https://*.google.de/search*",
+    "https://*.google.fr/search*",
+    "https://*.google.ca/search*",
     "webRequest",
     "webRequestBlocking",
     "storage"
