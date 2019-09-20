@@ -1,6 +1,6 @@
 import { DAYS, MONTHS, WEEKS } from '../CONSTANTS';
 
-enum ParserUnit {
+export enum ParserUnit {
   y = 'y',
   m = 'm',
   w = 'w',

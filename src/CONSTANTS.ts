@@ -7,4 +7,3 @@ export const YEARS = 10;
 export const ANYTIME = 1;
 
 export const totalSteps = DAYS + WEEKS + MONTHS + YEARS + ANYTIME;
-
