@@ -40,7 +40,7 @@ function init() {
     if (rangeVal === totalSteps) {
       sendToBackground();
     }
-    return sendToBackground(stepToDuration(rangeVal));
+    sendToBackground(stepToDuration(rangeVal));
   };
   const fragment = createDom(step, rangeOnChange);
   topNavElement.before(fragment);
