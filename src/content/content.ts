@@ -2,7 +2,6 @@ import { DAYS, MONTHS, SEND_ROLLING_TIME, totalSteps, WEEKS, YEARS } from '../CO
 import { durationStorage } from '../storage';
 import { IMessageParams } from '../types';
 import './content.scss';
-import './content.scss';
 import { animateSliderCircleToSelected, createDom, createSlider, ISliderOption } from './dom';
 import { parser, ParserUnit } from './parser';
 
