@@ -1,11 +1,5 @@
 import { DAYS, MONTHS, WEEKS } from '../CONSTANTS';
-
-export enum ParserUnit {
-  y = 'y',
-  m = 'm',
-  w = 'w',
-  d = 'd',
-}
+import { ParserUnit } from '../types';
 
 export function parser(query: string): { hit: string; step: number } {
   const parsed = query.match(/\|(\d+)(\w).*$/);

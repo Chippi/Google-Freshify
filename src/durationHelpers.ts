@@ -1,9 +1,8 @@
 import { DateTime, ToRelativeUnit } from 'luxon';
-import { ParserUnit } from './content/parser';
-const now = new Date();
+import { ParserUnit } from './types';
 
 export function getPastDate(unit: ToRelativeUnit, amount: number): Date {
-  const date = DateTime.fromJSDate(now)
+  const date = DateTime.fromJSDate(new Date())
     .minus({ [unit]: amount })
     .toJSDate();
   return date;
