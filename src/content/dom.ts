@@ -47,18 +47,20 @@ let sliderCircleRef: HTMLElement; // Used to animate the circle
 let firstSliderOptionRef: HTMLElement; // Needed to get width for positioning calculations
 
 export const createSlider = (sliderOptions: ISliderOption[]) => {
-  const sliderWrapper = createDomElementHelper('DIV', 'freshify');
+  const sliderWrapper = DIV('freshify');
   const options = createSliderOptions(sliderOptions);
 
   firstSliderOptionRef = options[0];
-  sliderWrapper.append(createSliderBar(), createSliderCircle(), ...options);
+
+  sliderCircleRef = DIV( 'freshify__circle');
+  sliderWrapper.append(DIV('freshify__bar'), sliderCircleRef, ...options);
 
   return sliderWrapper;
 };
 
 const createSliderOptions = (sliderOptions: ISliderOption[]) => {
   return sliderOptions.map(option => {
-    const sliderItem = createDomElementHelper('DIV', 'freshify__option');
+    const sliderItem = DIV('freshify__option');
 
     sliderItem.addEventListener('click', () => {
       sliderOptions.forEach(x => {
@@ -69,40 +71,16 @@ const createSliderOptions = (sliderOptions: ISliderOption[]) => {
       implementMeOnSelectDate(option);
     });
 
-    const sliderItemDot = createDomElementHelper('DIV', 'freshify__option--dot');
-    sliderItem.append(sliderItemDot, createSliderOptionTooltip(option));
+    const sliderItemDot = DIV('freshify__option--dot');
+    sliderItem.append(sliderItemDot, DIV('freshify__tooltip', P('', option.text)));
 
     if (option.superItem) {
-      const sliderItemText = createDomElementHelper('p', 'freshify__option--text');
-      sliderItemText.innerHTML = option.text;
       sliderItem.classList.add('freshify__option--super');
-      sliderItem.append(sliderItemText);
+      sliderItem.append(P('freshify__option--text', option.text));
     }
 
     return sliderItem;
   });
-};
-
-const createSliderOptionTooltip = (option: ISliderOption) => {
-  const sliderTooltipContainer = createDomElementHelper('DIV', 'freshify__tooltip');
-  const sliderTooltipText = createDomElementHelper('p');
-
-  sliderTooltipText.innerHTML = option.text;
-  sliderTooltipContainer.append(sliderTooltipText);
-
-  return sliderTooltipContainer;
-};
-
-const createSliderBar = () => {
-  return createDomElementHelper('DIV', 'freshify__bar');
-};
-
-const createSliderCircle = () => {
-  const sliderCircle = createDomElementHelper('DIV', 'freshify__circle');
-
-  sliderCircleRef = sliderCircle;
-
-  return sliderCircle;
 };
 
 export const animateSliderCircleToSelected = (sliderOptions: ISliderOption[]) => {
@@ -112,15 +90,5 @@ export const animateSliderCircleToSelected = (sliderOptions: ISliderOption[]) =>
   const fromLeftSide = (selectedIndex + 1) * optionWidth;
   const justifyCirclePositionToCenterOfOption = optionWidth / 2 + sliderCircleRef.clientWidth / 2;
   const positionFromLeftInPixels = `${fromLeftSide - justifyCirclePositionToCenterOfOption}px`;
-
   sliderCircleRef.style.transform = `translateX(${positionFromLeftInPixels})`;
-};
-
-const createDomElementHelper = (elementType: string, elementClass?: string) => {
-  const element = document.createElement(elementType);
-  if (elementClass) {
-    element.classList.add(elementClass);
-  }
-
-  return element;
 };
