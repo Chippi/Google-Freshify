@@ -28,7 +28,8 @@ function sendToBackground(duration?: string) {
 
 const init = () => {
   const currentDuration = durationStorage.get();
-  function generateSliderOptions(count: number, unit: ParserUnit): ISliderOption[]{
+  function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
+    const count = AmountOfUnit.get(unit);
     return Array.from({ length: count }, (_, index) => {
       const duration = `${index + 1}${unit}`;
       const text = getDurationText(duration);
@@ -42,10 +43,10 @@ const init = () => {
   }
 
   const sliderOptions: ISliderOption[] = [
-    ...generateSliderOptions(DAYS, ParserUnit.d),
-    ...generateSliderOptions(WEEKS, ParserUnit.w),
-    ...generateSliderOptions(MONTHS, ParserUnit.m),
-    ...generateSliderOptions(YEARS, ParserUnit.y),
+    ...generateSliderOptions(ParserUnit.d),
+    ...generateSliderOptions(ParserUnit.w),
+    ...generateSliderOptions(ParserUnit.m),
+    ...generateSliderOptions(ParserUnit.y),
     {
       duration: null,
       text: getDurationText(null),
@@ -78,3 +79,10 @@ const init = () => {
     }
   });
 };
+
+const AmountOfUnit = new Map<ParserUnit, number>([
+  [ParserUnit.d, DAYS],
+  [ParserUnit.w, WEEKS],
+  [ParserUnit.m, MONTHS],
+  [ParserUnit.y, YEARS]
+]); 
