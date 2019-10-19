@@ -1,35 +1,4 @@
-import { DAYS, MONTHS, totalSteps, WEEKS, YEARS } from '../CONSTANTS';
-import { DIV, P, RANGE } from './domHelpers';
-
-type RangeOnChange = (val: number, e?: Event) => void;
-
-const labelsPartial = () =>
-  DIV('freshify__labels', [
-    P('big-dot', 'Today'),
-    ...Array.from({ length: DAYS }, () => P()),
-    P('big-dot', '1 week'),
-    ...Array.from({ length: WEEKS - 1 }, () => P()),
-    P('big-dot', '1 month'),
-    ...Array.from({ length: MONTHS - 1 }, () => P()),
-    P('big-dot', '1 year'),
-    ...Array.from({ length: YEARS - 1 }, () => P()),
-    P('big-dot', 'Anytime'),
-  ]);
-
-const rangePartial = (rangeValue: number, onChange: RangeOnChange) => {
-  const range = RANGE(0, totalSteps, rangeValue);
-  range.onchange = (e: Event) => {
-    const strValue = (e.target as HTMLInputElement).value;
-    const val = Number(strValue);
-    onChange(val, e);
-  };
-  return range;
-};
-export function createDom(rangeValue: number, onChange: RangeOnChange) {
-  return DIV('freshify__content', [rangePartial(rangeValue, onChange), labelsPartial()]);
-}
-
-/** Poc stuff below this, aka new slider */
+import { DIV, P } from './domHelpers';
 
 export interface ISliderOption {
   text: string;
@@ -47,7 +16,7 @@ export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
 
   firstSliderOptionRef = options[0];
 
-  sliderCircleRef = DIV( 'freshify__circle');
+  sliderCircleRef = DIV('freshify__circle');
   sliderWrapper.append(DIV('freshify__bar'), sliderCircleRef, ...options);
 
   return sliderWrapper;
@@ -56,14 +25,15 @@ export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
 const createSliderOptions = (sliderOptions: ISliderOption[], onSelect) => {
   return sliderOptions.map(option => {
     const sliderItem = DIV('freshify__option');
+    sliderItem.dataset.duration = option.duration;
 
-    sliderItem.addEventListener('click', () => {
+    sliderItem.addEventListener('click', e => {
+      const duration = (e.currentTarget as HTMLElement).dataset.duration;
       sliderOptions.forEach(x => {
-        x.isSelected = x.text === option.text;
+        x.isSelected = x.duration === duration;
       });
-
       animateSliderCircleToSelected(sliderOptions);
-      onSelect(option);
+      onSelect(duration);
     });
 
     const sliderItemDot = DIV('freshify__option--dot');
@@ -85,5 +55,6 @@ export const animateSliderCircleToSelected = (sliderOptions: ISliderOption[]) =>
   const fromLeftSide = (selectedIndex + 1) * optionWidth;
   const justifyCirclePositionToCenterOfOption = optionWidth / 2 + sliderCircleRef.clientWidth / 2;
   const positionFromLeftInPixels = `${fromLeftSide - justifyCirclePositionToCenterOfOption}px`;
+
   sliderCircleRef.style.transform = `translateX(${positionFromLeftInPixels})`;
 };

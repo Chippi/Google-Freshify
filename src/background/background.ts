@@ -26,7 +26,6 @@ chrome.webRequest.onBeforeRequest.addListener(
     if (isImageSearch) {
       return;
     }
-
     if (duration) {
       const date = getDate(duration);
       params.set('tbs', `cdr:1,cd_min:${new Intl.DateTimeFormat('en-US').format(date)}`);

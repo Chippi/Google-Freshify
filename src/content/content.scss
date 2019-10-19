@@ -20,6 +20,7 @@ $freshify-margin-left: 168px;
         height: 40px;
         flex-direction: column;
         cursor: pointer;
+        white-space: nowrap;
         
         &:hover {
             .freshify__tooltip {
@@ -47,7 +48,6 @@ $freshify-margin-left: 168px;
         
         &--text {
             font-size: 10px;
-            white-space: nowrap;
             position: absolute;
             top: 15px;
         }

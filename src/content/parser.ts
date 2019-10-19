@@ -1,30 +1,15 @@
-import { DAYS, MONTHS, WEEKS } from '../CONSTANTS';
-import { ParserUnit } from '../types';
+import { ParserUnit } from "../types";
 
-export function parser(query: string): { hit: string; step: number } {
-  const parsed = query.match(/\|(\d+)(\w).*$/);
-
+export function parser(query: string): { query: string, amount: number, unit: ParserUnit } {
+  const parsed = query.match(/(.*)\|(\d+)(\w).*$/);
   if (parsed) {
-    const [hit, count, unit] = parsed;
-    const step = getStep(unit as ParserUnit, parseFloat(count));
-    if (step === null) {
-      return null;
+    const [_, stripedQuery, amount, unit] = parsed
+    return {
+      query: stripedQuery,
+      amount: Number(amount),
+      unit: unit as ParserUnit
     }
-    return { step, hit };
   }
-  return null;
+  return null
 }
 
-function getStep(unit: ParserUnit, count): number {
-  switch (unit) {
-    case ParserUnit.d:
-      return count;
-    case ParserUnit.w:
-      return count + DAYS;
-    case ParserUnit.m:
-      return count + DAYS + WEEKS;
-    case ParserUnit.y:
-      return count + DAYS + WEEKS + MONTHS;
-  }
-  return null;
-}

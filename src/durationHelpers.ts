@@ -1,5 +1,6 @@
 import { DateTime, ToRelativeUnit } from 'luxon';
 import { ParserUnit } from './types';
+import { parser } from './content/parser';
 
 export function getPastDate(unit: ParserUnit, amount: number): Date {
   const relativeUnit = getLuxonUnit(unit);
@@ -24,19 +25,23 @@ export function getLuxonUnit(unit: ParserUnit): ToRelativeUnit {
 }
 
 export function getDate(duration: string): Date {
-  const { unit, amount } = parseDuration(duration);
-  return getPastDate(unit, amount);
+  const amount = Number(duration.slice(0, -1));
+  const unit = duration.substr(-1);
+  return getPastDate(unit as ParserUnit, amount);
 }
 
-export function getText(duration: string) {
-  if (duration ="0d") {
-    return "today";
+export function getDurationText(duration: string) {
+  switch (duration) {
+    case "0d":
+      return "Today"
+    case null:
+      return "Anytime"
   }
   const { unit, amount } = parseDuration(duration);
   return `${amount} ${unitToText(unit, amount)}`
 }
 
-function unitToText(unit, amount){
+function unitToText(unit, amount) {
   switch (unit) {
     case ParserUnit.d:
       return (amount === 1) ? 'day' : 'days'
