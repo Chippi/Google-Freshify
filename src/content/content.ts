@@ -8,7 +8,7 @@ import { parser } from './parser';
 
 document.addEventListener('DOMContentLoaded', () => init());
 
-function sendToBackground(duration?: string, dontReload?) {
+function sendToBackground(duration?: string) {
   durationStorage.set(duration);
   const messageParams: IMessageParams = { timeParam: duration, type: SEND_ROLLING_TIME };
   chrome.runtime.sendMessage(messageParams, response => {
@@ -20,13 +20,12 @@ function sendToBackground(duration?: string, dontReload?) {
     if (response.storageData) {
       durationStorage.set(response.storageData);
     }
-    if (response.reload && !dontReload) {
+    if (response.reload) {
       window.location.reload();
     }
   });
 }
 
-// POC STUFF
 const init = () => {
   const currentDuration = durationStorage.get();
   function generateSliderOptions(count: number, unit: ParserUnit): ISliderOption[]{
@@ -74,6 +73,7 @@ const init = () => {
       if (parsed) {
         durationStorage.set(parsed.amount + parsed.unit)
         input.value = parsed.query;
+        sendToBackground(parsed.amount + parsed.unit)
       }
     }
   });

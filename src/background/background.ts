@@ -9,11 +9,12 @@ console.log('Hello from background, domains:', domains);
 chrome.runtime.onMessage.addListener((request: IMessageParams, sender, sendResponse) => {
   if (request.type === SEND_ROLLING_TIME) {
     durationStorage.set(request.timeParam);
+    sendResponse({
+      reload: true,
+      storageData: request.timeParam,
+    });
   }
-  sendResponse({
-    reload: true,
-    storageData: request.timeParam,
-  });
+  
 });
 
 chrome.webRequest.onBeforeRequest.addListener(
