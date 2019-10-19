@@ -4,6 +4,7 @@ import { IMessageParams, ParserUnit } from '../types';
 import './content.scss';
 import { animateSliderCircleToSelected, createDom, createSlider, ISliderOption } from './dom';
 import { parser } from './parser';
+import { durationToText } from '../durationHelpers';
 
 document.addEventListener('DOMContentLoaded', () => init());
 
@@ -63,44 +64,31 @@ function init() {
 const initPoc = () => {
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
 
+  function generateSliderOptions(count: number, unit: ParserUnit): ISliderOption[]{
+    return Array.from({ length: count }, (_, index) => {
+      const duration = `${index + 1}${unit}`;
+      const text = (index === 0 && unit === ParserUnit.d) ? 'Today' : durationToText(duration);
+      return {
+        superItem: index === 0,
+        duration,
+        text,
+      }
+    });
+  }
+
   const sliderOptions: ISliderOption[] = [
+    ...generateSliderOptions(DAYS, ParserUnit.d),
+    ...generateSliderOptions(WEEKS, ParserUnit.w),
+    ...generateSliderOptions(MONTHS, ParserUnit.m),
+    ...generateSliderOptions(YEARS, ParserUnit.y),
     {
-      text: 'Today',
+      duration: null,
+      text: 'Anytime',
       superItem: true,
-      duration: '1d',
-    },
-    {
-      text: 'Yesterday',
-      duration: '2d',
-    },
-    {
-      text: '3 Days',
-      duration: '3d',
-      isSelected: true,
-    },
-    {
-      text: '4 Days',
-      duration: '4d',
-    },
-    {
-      text: '5 Days',
-      duration: '5d',
-    },
-    {
-      text: '6 Days',
-      duration: '6d',
-    },
-    {
-      text: '7 Days',
-      duration: '7d',
-    },
-    {
-      text: '1 Week',
-      duration: '1w',
-      superItem: true,
-    },
+    }
   ];
 
+  sliderOptions[4].isSelected = true;
   const sliderFragment = createSlider(sliderOptions);
   topNavElement.before(sliderFragment);
 
