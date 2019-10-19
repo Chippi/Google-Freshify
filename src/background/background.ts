@@ -1,6 +1,6 @@
 import { SEND_ROLLING_TIME } from '../CONSTANTS';
 import * as domains from '../domains.js';
-import { durationToDate } from '../durationHelpers';
+import { getDate } from '../durationHelpers';
 import { durationStorage } from '../storage';
 import { IMessageParams } from '../types';
 
@@ -28,7 +28,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     }
 
     if (duration) {
-      const date = durationToDate(duration);
+      const date = getDate(duration);
       params.set('tbs', `cdr:1,cd_min:${new Intl.DateTimeFormat('en-US').format(date)}`);
     } else {
       params.set('tbs', ``);

@@ -31,11 +31,6 @@ export function createDom(rangeValue: number, onChange: RangeOnChange) {
 
 /** Poc stuff below this, aka new slider */
 
-// TODO: HENRIK
-export const implementMeOnSelectDate = (sliderOption: ISliderOption) => {
-  console.log(sliderOption);
-};
-
 export interface ISliderOption {
   text: string;
   duration: string;
@@ -46,9 +41,9 @@ export interface ISliderOption {
 let sliderCircleRef: HTMLElement; // Used to animate the circle
 let firstSliderOptionRef: HTMLElement; // Needed to get width for positioning calculations
 
-export const createSlider = (sliderOptions: ISliderOption[]) => {
+export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
   const sliderWrapper = DIV('freshify');
-  const options = createSliderOptions(sliderOptions);
+  const options = createSliderOptions(sliderOptions, onSelect);
 
   firstSliderOptionRef = options[0];
 
@@ -58,7 +53,7 @@ export const createSlider = (sliderOptions: ISliderOption[]) => {
   return sliderWrapper;
 };
 
-const createSliderOptions = (sliderOptions: ISliderOption[]) => {
+const createSliderOptions = (sliderOptions: ISliderOption[], onSelect) => {
   return sliderOptions.map(option => {
     const sliderItem = DIV('freshify__option');
 
@@ -68,7 +63,7 @@ const createSliderOptions = (sliderOptions: ISliderOption[]) => {
       });
 
       animateSliderCircleToSelected(sliderOptions);
-      implementMeOnSelectDate(option);
+      onSelect(option);
     });
 
     const sliderItemDot = DIV('freshify__option--dot');

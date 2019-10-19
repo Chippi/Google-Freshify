@@ -4,7 +4,7 @@ import { IMessageParams, ParserUnit } from '../types';
 import './content.scss';
 import { animateSliderCircleToSelected, createDom, createSlider, ISliderOption } from './dom';
 import { parser } from './parser';
-import { durationToText } from '../durationHelpers';
+import { getText } from '../durationHelpers';
 
 document.addEventListener('DOMContentLoaded', () => init());
 
@@ -62,14 +62,14 @@ function init() {
 
 // POC STUFF
 const initPoc = () => {
-  const topNavElement = document.querySelector('#top_nav') as HTMLElement;
-
+  const currentDuration = durationStorage.get();
   function generateSliderOptions(count: number, unit: ParserUnit): ISliderOption[]{
     return Array.from({ length: count }, (_, index) => {
       const duration = `${index + 1}${unit}`;
-      const text = (index === 0 && unit === ParserUnit.d) ? 'Today' : durationToText(duration);
+      const text = getText(duration);
       return {
         superItem: index === 0,
+        isSelected: currentDuration === duration,
         duration,
         text,
       }
@@ -85,11 +85,14 @@ const initPoc = () => {
       duration: null,
       text: 'Anytime',
       superItem: true,
+      isSelected: currentDuration === null
     }
   ];
 
-  sliderOptions[4].isSelected = true;
-  const sliderFragment = createSlider(sliderOptions);
+  const sliderFragment = createSlider(sliderOptions, ({duration}) => {
+    sendToBackground(duration)
+  });
+  const topNavElement = document.querySelector('#top_nav') as HTMLElement;
   topNavElement.before(sliderFragment);
 
   // animate selectedCircle to right spot after put into DOM
