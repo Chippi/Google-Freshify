@@ -1,4 +1,4 @@
-export const SEND_ROLLING_TIME = 'SEND.ROLLING.TIME';
+export const MESSAGE_STORE_DURATION = 'MESSAGE_STORE_DURATION';
 
 export const DAYS = 6;
 export const WEEKS = 3;

@@ -1,4 +1,4 @@
-import { SEND_ROLLING_TIME } from '../CONSTANTS';
+import { MESSAGE_STORE_DURATION as STORE_ROLLING_TIME } from '../CONSTANTS';
 import * as domains from '../domains.js';
 import { getDate } from '../durationHelpers';
 import { durationStorage } from '../storage';
@@ -7,14 +7,10 @@ import { IMessageParams } from '../types';
 console.log('Hello from background, domains:', domains);
 
 chrome.runtime.onMessage.addListener((request: IMessageParams, sender, sendResponse) => {
-  if (request.type === SEND_ROLLING_TIME) {
-    durationStorage.set(request.timeParam);
-    sendResponse({
-      reload: true,
-      storageData: request.timeParam,
-    });
+  if (request.type === STORE_ROLLING_TIME) {
+    durationStorage.set(request.duration);
+    sendResponse();
   }
-  
 });
 
 chrome.webRequest.onBeforeRequest.addListener(

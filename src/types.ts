@@ -1,6 +1,6 @@
 export interface IMessageParams {
   type: string;
-  timeParam: string;
+  duration: string;
 }
 
 export enum ParserUnit {

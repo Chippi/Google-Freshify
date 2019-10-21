@@ -1,4 +1,4 @@
-import { DAYS, MONTHS, SEND_ROLLING_TIME, WEEKS, YEARS } from '../CONSTANTS';
+import { DAYS, MONTHS, MESSAGE_STORE_DURATION, WEEKS, YEARS } from '../CONSTANTS';
 import { durationStorage } from '../storage';
 import { IMessageParams, ParserUnit } from '../types';
 import './content.scss';
@@ -8,39 +8,20 @@ import { parser } from './parser';
 
 document.addEventListener('DOMContentLoaded', () => init());
 
-function sendToBackground(duration?: string) {
+function storeAndReload(duration: string, callback?: () => void) {
   durationStorage.set(duration);
-  const messageParams: IMessageParams = { timeParam: duration, type: SEND_ROLLING_TIME };
-  chrome.runtime.sendMessage(messageParams, response => {
+  const messageParams: IMessageParams = { duration, type: MESSAGE_STORE_DURATION };
+  chrome.runtime.sendMessage(messageParams, () => {
     const lastError = chrome.runtime.lastError;
     if (lastError) {
       console.error('Error', lastError);
       return;
     }
-    if (response.storageData) {
-      durationStorage.set(response.storageData);
-    }
-    if (response.reload) {
-      window.location.reload();
-    }
+    callback && callback();
   });
 }
 
 const init = () => {
-  const currentDuration = durationStorage.get();
-  function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
-    const count = AmountOfUnit.get(unit);
-    return Array.from({ length: count }, (_, index) => {
-      const duration = `${index + 1}${unit}`;
-      const text = getDurationText(duration);
-      return {
-        superItem: index === 0,
-        isSelected: currentDuration === duration,
-        duration,
-        text,
-      }
-    });
-  }
 
   const sliderOptions: ISliderOption[] = [
     ...generateSliderOptions(ParserUnit.d),
@@ -56,7 +37,9 @@ const init = () => {
   ];
 
   const sliderFragment = createSlider(sliderOptions, duration => {
-    sendToBackground(duration)
+    storeAndReload(duration, () => {
+      window.location.reload();
+    });
   });
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
   topNavElement.before(sliderFragment);
@@ -74,11 +57,28 @@ const init = () => {
       if (parsed) {
         durationStorage.set(parsed.amount + parsed.unit)
         input.value = parsed.query;
-        sendToBackground(parsed.amount + parsed.unit)
+        storeAndReload(parsed.amount + parsed.unit)
       }
     }
   });
 };
+
+
+
+const currentDuration = durationStorage.get();
+function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
+  const count = AmountOfUnit.get(unit);
+  return Array.from({ length: count }, (_, index) => {
+    const duration = `${index + 1}${unit}`;
+    const text = getDurationText(duration);
+    return {
+      superItem: index === 0,
+      isSelected: currentDuration === duration,
+      duration,
+      text,
+    }
+  });
+}
 
 const AmountOfUnit = new Map<ParserUnit, number>([
   [ParserUnit.d, DAYS],
