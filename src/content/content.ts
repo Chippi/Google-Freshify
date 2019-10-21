@@ -6,23 +6,10 @@ import { animateSliderCircleToSelected, createSlider, ISliderOption } from './do
 import { getDurationText } from '../durationHelpers';
 import { parser } from './parser';
 
+const currentDuration = durationStorage.get();
 document.addEventListener('DOMContentLoaded', () => init());
 
-function storeAndReload(duration: string, callback?: () => void) {
-  durationStorage.set(duration);
-  const messageParams: IMessageParams = { duration, type: MESSAGE_STORE_DURATION };
-  chrome.runtime.sendMessage(messageParams, () => {
-    const lastError = chrome.runtime.lastError;
-    if (lastError) {
-      console.error('Error', lastError);
-      return;
-    }
-    callback && callback();
-  });
-}
-
-const init = () => {
-
+function init() {
   const sliderOptions: ISliderOption[] = [
     ...generateSliderOptions(ParserUnit.d),
     ...generateSliderOptions(ParserUnit.w),
@@ -63,9 +50,19 @@ const init = () => {
   });
 };
 
+function storeAndReload(duration: string, callback?: () => void) {
+  durationStorage.set(duration);
+  const messageParams: IMessageParams = { duration, type: MESSAGE_STORE_DURATION };
+  chrome.runtime.sendMessage(messageParams, () => {
+    const lastError = chrome.runtime.lastError;
+    if (lastError) {
+      console.error('Error', lastError);
+      return;
+    }
+    callback && callback();
+  });
+}
 
-
-const currentDuration = durationStorage.get();
 function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
   const count = AmountOfUnit.get(unit);
   return Array.from({ length: count }, (_, index) => {
