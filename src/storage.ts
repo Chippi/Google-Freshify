@@ -1,5 +1,4 @@
 export const STORAGE_SAVE_IN_MINUTES = 'STORAGE_SAVE_IN_MINUTES';
-
 export const STORAGE_TIME_KEY = 'STORAGE_TIME_KEY';
 
 export const storage = {
@@ -15,7 +14,7 @@ export const storage = {
   get: async () => {
     const p = new Promise<string>((resolve, reject) => {
       chrome.storage.sync.get(STORAGE_TIME_KEY, value => {
-        resolve(value.STORAGE_TIME_KEY);
+        resolve(value.STORAGE_TIME_KEY || null);
       });
     });
     const result = await p;
