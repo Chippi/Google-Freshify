@@ -5,22 +5,29 @@ $freshify-margin-left: 168px;
 
 .freshify {
     margin-left: $freshify-margin-left;
-    display: flex;
-    width: $content-width;
-    justify-content: space-between;
+    display: inline-flex;
     margin-top: 10px;
     position: relative;
     user-select: none;
     
+    &:not(:hover) {
+        .freshify__option--selected {
+            .freshify__tooltip {
+                opacity: 1;
+                transition: .1s opacity ease;
+            }
+        }
+    }
+    
     &__option {
         font-size: 11px;
-        flex: 1;
         display: flex;
         align-items: center;
         height: 40px;
         flex-direction: column;
         cursor: pointer;
         white-space: nowrap;
+        width: 19.5px;
         
         &:hover {
             .freshify__tooltip {
@@ -59,9 +66,12 @@ $freshify-margin-left: 168px;
         background: $google-blue;
         border-radius: 100%;
         margin-top: 4px;
-        transition: .2s transform ease;
         pointer-events: none;
         position: absolute;
+        
+        &--transition-enabled {
+            transition: .2s transform ease;
+        }
     }
     
     &__tooltip {
@@ -95,89 +105,5 @@ $freshify-margin-left: 168px;
         right: 0;
         pointer-events: none;
     }
-    
-    &__content {
-        margin-left: 168px;
-        height: 60px;
-        width: $content-width;
-        position: relative;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
 
-        input[type=range] {
-            display: block;
-            -webkit-appearance: none;
-            width: 100%;
-            cursor: pointer;
-            background: transparent;
-            margin: 0;
-            padding:20px 0;
-
-            &::-webkit-slider-runnable-track {
-                width: 300px;
-                height: 2px;
-                background: #dfe1e5;
-                border: none;
-                border-radius: 4px;
-                z-index: 5;
-            }
-
-            &::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                border: none;
-                height: 16px;
-                width: 16px;
-                border-radius: 50%;
-                background: $google-blue;
-                ;
-                margin-top: -7.5px;
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
-    &__labels {
-        display: flex;
-        pointer-events: none;
-        position: absolute;
-        top: 26px;
-        left: 0px;
-        right: 0px;
-        bottom: 0;
-
-        p {
-            width: calc(#{$content-width} / 32);
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            font-size: 11px;
-            color: #777;
-            flex-shrink: 0;
-            position: relative;
-            margin: 0;
-            white-space: nowrap;
-
-            &::before {
-                content: '';
-                width: 6px;
-                height: 6px;
-                border-radius: 100%;
-                background: #dfe1e5;
-                display: block;
-            }
-
-            &.big-dot {
-                &::before {
-                    width: 10px;
-                    height: 10px;
-                    margin-top: -2px;
-                    margin-bottom: 5px;
-                }
-            }
-        }
-    }
 }

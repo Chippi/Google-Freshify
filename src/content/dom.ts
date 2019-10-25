@@ -7,14 +7,12 @@ export interface ISliderOption {
   isSelected?: boolean;
 }
 
+let sliderItems: HTMLElement[] = [];
 let sliderCircleRef: HTMLElement; // Used to animate the circle
-let firstSliderOptionRef: HTMLElement; // Needed to get width for positioning calculations
 
 export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
   const sliderWrapper = DIV('freshify');
   const options = createSliderOptions(sliderOptions, onSelect);
-
-  firstSliderOptionRef = options[0];
 
   sliderCircleRef = DIV('freshify__circle');
   sliderWrapper.append(DIV('freshify__bar'), sliderCircleRef, ...options);
@@ -25,6 +23,7 @@ export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
 const createSliderOptions = (sliderOptions: ISliderOption[], onSelect) => {
   return sliderOptions.map(option => {
     const sliderItem = DIV('freshify__option');
+    sliderItems.push(sliderItem);
     sliderItem.dataset.duration = option.duration;
 
     sliderItem.addEventListener('click', e => {
@@ -50,11 +49,28 @@ const createSliderOptions = (sliderOptions: ISliderOption[], onSelect) => {
 
 export const animateSliderCircleToSelected = (sliderOptions: ISliderOption[]) => {
   const selectedIndex = sliderOptions.findIndex(x => x.isSelected);
-  const optionWidth = firstSliderOptionRef.clientWidth;
+  const optionWidth = 19.5;
 
   const fromLeftSide = (selectedIndex + 1) * optionWidth;
   const justifyCirclePositionToCenterOfOption = optionWidth / 2 + sliderCircleRef.clientWidth / 2;
   const positionFromLeftInPixels = `${fromLeftSide - justifyCirclePositionToCenterOfOption}px`;
 
   sliderCircleRef.style.transform = `translateX(${positionFromLeftInPixels})`;
+
+  enableTransitionsAfterInitialPositioning();
+  addActiveStateToOption(selectedIndex);
+};
+
+const enableTransitionsAfterInitialPositioning = () => {
+  setTimeout(() => sliderCircleRef.classList.add('freshify__circle--transition-enabled'));
+};
+
+const addActiveStateToOption = (selectedIndex: number) => {
+  sliderItems.forEach((item, index) => {
+    item.classList.remove('freshify__option--selected');
+
+    index === selectedIndex
+      ? item.classList.add('freshify__option--selected')
+      : item.classList.remove('freshify__option--selected');
+  });
 };
