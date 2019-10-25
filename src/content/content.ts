@@ -12,17 +12,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   currentDuration = await storage.get();
   const lastUsedDate = await storage.getLastUsed();
   chrome.storage.sync.get(STORAGE_SAVE_IN_MINUTES, obj => {
-    const expireMinutesStr = obj[STORAGE_SAVE_IN_MINUTES];
-    if (!lastUsedDate || !expireMinutesStr) {
+      const expireMinutes = Number(obj[STORAGE_SAVE_IN_MINUTES] || 60);
+      console.log({ lastUsedDate, expireMinutes });
+      if (!lastUsedDate || !expireMinutes) {
         init();
         return;
     }
-    const expireMinutes = Number(expireMinutesStr);
-    const expireDate = DateTime.fromJSDate(new Date()).minus({ minutes: expireMinutes });
-    const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').minutes;
-    const hasExpired = diff > 0;
-    console.log({ hasExpired, expireMinutes });
-    if (hasExpired) {
+      const expireDate = DateTime.fromJSDate(new Date()).minus({ minutes: expireMinutes });
+      const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').minutes;
+      const hasExpired = diff > 0;
+      console.log({ hasExpired, expireMinutes });
+      if (hasExpired) {
       storage.set(null).then(() => {
         init();
       });
