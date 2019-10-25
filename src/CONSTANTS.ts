@@ -8,5 +8,4 @@ export enum ParserUnit {
     m = 'm',
     w = 'w',
     d = 'd',
-  }
-  
+}

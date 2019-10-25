@@ -1,6 +1,8 @@
+import { DateTime } from 'luxon';
 import { DAYS, MONTHS, ParserUnit, WEEKS, YEARS } from '../CONSTANTS';
 import { getDurationText } from '../durationHelpers';
 import { storage } from '../storage';
+import { STORAGE_SAVE_IN_MINUTES } from './../storage';
 import './content.scss';
 import { animateSliderCircleToSelected, createSlider, ISliderOption } from './dom';
 import { parser } from './parser';
@@ -8,9 +10,25 @@ import { parser } from './parser';
 let currentDuration;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    currentDuration = await storage.get();
-    console.log(currentDuration);
-    init();
+  currentDuration = await storage.get();
+  const lastUsedDate = await storage.getLastUsed();
+  chrome.storage.sync.get(STORAGE_SAVE_IN_MINUTES, obj => {
+    if (!lastUsedDate) {
+      return;
+    }
+    const expireMinutes = Number(obj[STORAGE_SAVE_IN_MINUTES]);
+    const expireDate = DateTime.fromJSDate(new Date()).minus({ minutes: expireMinutes });
+    const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').values.minutes;
+    const hasExpired = diff > 0;
+    console.log({ hasExpired, expireMinutes });
+    if (hasExpired) {
+      storage.set(null).then(() => {
+        init();
+      });
+    } else {
+      init();
+    }
+  });
 });
 
 function init() {
@@ -28,8 +46,8 @@ function init() {
   ];
 
   const sliderFragment = createSlider(sliderOptions, async duration => {
-      await storage.set(duration);
-      window.location.reload();
+    await storage.set(duration);
+    window.location.reload();
   });
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
   topNavElement.before(sliderFragment);
