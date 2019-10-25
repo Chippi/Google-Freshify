@@ -10,19 +10,20 @@ const sliderItems: HTMLElement[] = [];
 let sliderCircleRef: HTMLElement; // Used to animate the circle
 
 export const createSlider = () => {
-  const sliderWrapper = DIV('freshify');
-  const options = createSliderOptions();
-
   sliderCircleRef = DIV('freshify__circle');
-  sliderWrapper.append(DIV('freshify__bar'), sliderCircleRef, ...options);
-
-  return sliderWrapper;
+  return DIV('freshify', [DIV('freshify__bar'), sliderCircleRef, ...createSliderOptions()]);
 };
 
 const createSliderOptions = () => {
   return sliderOptionsModel.map(option => {
-    const sliderItem = DIV('freshify__option');
-    sliderItems.push(sliderItem);
+    const sliderItem = DIV(
+      `freshify__option ${option.superItem ? 'freshify__option--super' : ''}`,
+      [
+        DIV('freshify__option--dot'),
+        DIV('freshify__tooltip', P('', option.text)),
+        option.superItem ? P('freshify__option--text', option.text) : undefined,
+      ],
+    );
     sliderItem.dataset.duration = option.duration;
 
     sliderItem.addEventListener('click', e => {
@@ -33,13 +34,7 @@ const createSliderOptions = () => {
       window.location.reload();
     });
 
-    const sliderItemDot = DIV('freshify__option--dot');
-    sliderItem.append(sliderItemDot, DIV('freshify__tooltip', P('', option.text)));
-
-    if (option.superItem) {
-      sliderItem.classList.add('freshify__option--super');
-      sliderItem.append(P('freshify__option--text', option.text));
-    }
+    sliderItems.push(sliderItem);
 
     return sliderItem;
   });
