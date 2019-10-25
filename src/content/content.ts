@@ -1,28 +1,24 @@
 import { DateTime } from 'luxon';
-import { storage, STORAGE_TIME_KEY } from '../storage';
-import { STORAGE_SAVE_IN_MINUTES } from './../storage';
+import { storage, STORAGE_SAVE_IN_MINUTES } from '../storage';
 import './content.scss';
 import { animateSliderCircleToSelected, createSlider } from './dom';
 import { parser } from './parser';
-import { createSliderModel } from './sliderOptionsModel';
-
-let currentDuration;
+import { setSelectedOptionModel } from './sliderOptionsModel';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  currentDuration = await storage.get();
   const lastUsedDate = await storage.getLastUsed();
   chrome.storage.sync.get(STORAGE_SAVE_IN_MINUTES, obj => {
-      const expireMinutes = Number(obj[STORAGE_SAVE_IN_MINUTES] || 60);
-      console.log({ lastUsedDate, expireMinutes });
-      if (!lastUsedDate || !expireMinutes) {
-        init();
-        return;
+    const expireMinutes = Number(obj[STORAGE_SAVE_IN_MINUTES] || 60);
+    console.log({ lastUsedDate, expireMinutes });
+    if (!lastUsedDate || !expireMinutes) {
+      init();
+      return;
     }
-      const expireDate = DateTime.fromJSDate(new Date()).minus({ minutes: expireMinutes });
-      const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').minutes;
-      const hasExpired = diff > 0;
-      console.log({ hasExpired, expireMinutes });
-      if (hasExpired) {
+    const expireDate = DateTime.fromJSDate(new Date()).minus({ minutes: expireMinutes });
+    const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').minutes;
+    const hasExpired = diff > 0;
+    console.log({ hasExpired, expireMinutes });
+    if (hasExpired) {
       storage.set(null).then(() => {
         init();
       });
@@ -32,18 +28,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-function init() {
-  const sliderOptions = createSliderModel(currentDuration);
+async function init() {
+  const currentDuration = await storage.get();
 
-  const sliderFragment = createSlider(sliderOptions, async duration => {
-    await storage.set(duration);
-    window.location.reload();
-  });
+  setSelectedOptionModel(currentDuration);
+
+  const sliderFragment = createSlider();
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
   topNavElement.before(sliderFragment);
 
   // animate selectedCircle to right spot after put into DOM
-  animateSliderCircleToSelected(sliderOptions);
+  animateSliderCircleToSelected();
 
   const qInput = document.querySelector('[name="q"]') as HTMLInputElement;
   qInput.addEventListener('keypress', (e: KeyboardEvent) => {
