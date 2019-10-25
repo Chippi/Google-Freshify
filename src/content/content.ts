@@ -1,9 +1,9 @@
-import { DAYS, MONTHS, MESSAGE_STORE_DURATION, WEEKS, YEARS } from '../CONSTANTS';
+import { DAYS, MESSAGE_STORE_DURATION, MONTHS, WEEKS, YEARS } from '../CONSTANTS';
+import { getDurationText } from '../durationHelpers';
 import { durationStorage } from '../storage';
 import { IMessageParams, ParserUnit } from '../types';
 import './content.scss';
 import { animateSliderCircleToSelected, createSlider, ISliderOption } from './dom';
-import { getDurationText } from '../durationHelpers';
 import { parser } from './parser';
 
 const currentDuration = durationStorage.get();
@@ -19,8 +19,8 @@ function init() {
       duration: null,
       text: getDurationText(null),
       superItem: true,
-      isSelected: currentDuration === null
-    }
+      isSelected: currentDuration === null,
+    },
   ];
 
   const sliderFragment = createSlider(sliderOptions, duration => {
@@ -42,13 +42,13 @@ function init() {
       const input = e.target as HTMLInputElement;
       const parsed = parser(input.value);
       if (parsed) {
-        durationStorage.set(parsed.amount + parsed.unit)
+        durationStorage.set(parsed.amount + parsed.unit);
         input.value = parsed.query;
-        storeAndReload(parsed.amount + parsed.unit)
+        storeAndReload(parsed.amount + parsed.unit);
       }
     }
   });
-};
+}
 
 function storeAndReload(duration: string, callback?: () => void) {
   durationStorage.set(duration);
@@ -59,6 +59,7 @@ function storeAndReload(duration: string, callback?: () => void) {
       console.error('Error', lastError);
       return;
     }
+    // tslint:disable-next-line:no-unused-expression
     callback && callback();
   });
 }
@@ -73,7 +74,7 @@ function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
       isSelected: currentDuration === duration,
       duration,
       text,
-    }
+    };
   });
 }
 
@@ -81,5 +82,5 @@ const AmountOfUnit = new Map<ParserUnit, number>([
   [ParserUnit.d, DAYS],
   [ParserUnit.w, WEEKS],
   [ParserUnit.m, MONTHS],
-  [ParserUnit.y, YEARS]
-]); 
+  [ParserUnit.y, YEARS],
+]);
