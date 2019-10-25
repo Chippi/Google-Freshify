@@ -3,9 +3,8 @@ $slider-bg: #dbdbdb;
 $freshify-margin-left: 168px;
 
 .freshify {
-    margin-left: $freshify-margin-left;
     display: inline-flex;
-    margin-top: 10px;
+    margin: 10px 0 20px $freshify-margin-left;
     position: relative;
     user-select: none;
     
