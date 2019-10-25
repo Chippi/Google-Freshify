@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const expireMinutes = Number(obj[STORAGE_SAVE_IN_MINUTES]);
     const expireDate = DateTime.fromJSDate(new Date()).minus({ minutes: expireMinutes });
-    const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').values.minutes;
+    const diff = expireDate.diff(DateTime.fromJSDate(lastUsedDate), 'minutes').minutes;
     const hasExpired = diff > 0;
     console.log({ hasExpired, expireMinutes });
     if (hasExpired) {
