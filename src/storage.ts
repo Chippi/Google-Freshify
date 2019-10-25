@@ -1,12 +1,24 @@
 export const STORAGE_SAVE_IN_MINUTES = 'STORAGE_SAVE_IN_MINUTES';
 
-const STORAGE_TIME_KEY = 'STORAGE_TIME_KEY';
-export const durationStorage = {
-  get(): string {
-    const s = localStorage.getItem(STORAGE_TIME_KEY);
-    return (s === "null" ? null : s)
+export const STORAGE_TIME_KEY = 'STORAGE_TIME_KEY';
+
+export const storage = {
+  set: async (duration: string) => {
+    const p = new Promise((resolve, reject) => {
+      chrome.storage.sync.set({ STORAGE_TIME_KEY: duration }, () => {
+        resolve();
+      });
+    });
+    const result = await p;
+    return result;
   },
-  set(duration: string): void {
-    localStorage.setItem(STORAGE_TIME_KEY, duration);
+  get: async () => {
+    const p = new Promise<string>((resolve, reject) => {
+      chrome.storage.sync.get(STORAGE_TIME_KEY, value => {
+        resolve(value.STORAGE_TIME_KEY);
+      });
+    });
+    const result = await p;
+    return result;
   },
 };

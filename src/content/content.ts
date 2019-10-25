@@ -1,13 +1,17 @@
-import { DAYS, MESSAGE_STORE_DURATION, MONTHS, WEEKS, YEARS } from '../CONSTANTS';
+import { DAYS, MONTHS, ParserUnit, WEEKS, YEARS } from '../CONSTANTS';
 import { getDurationText } from '../durationHelpers';
-import { durationStorage } from '../storage';
-import { IMessageParams, ParserUnit } from '../types';
+import { storage } from '../storage';
 import './content.scss';
 import { animateSliderCircleToSelected, createSlider, ISliderOption } from './dom';
 import { parser } from './parser';
 
-const currentDuration = durationStorage.get();
-document.addEventListener('DOMContentLoaded', () => init());
+let currentDuration;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    currentDuration = await storage.get();
+    console.log(currentDuration);
+    init();
+});
 
 function init() {
   const sliderOptions: ISliderOption[] = [
@@ -23,10 +27,9 @@ function init() {
     },
   ];
 
-  const sliderFragment = createSlider(sliderOptions, duration => {
-    storeAndReload(duration, () => {
+  const sliderFragment = createSlider(sliderOptions, async duration => {
+      await storage.set(duration);
       window.location.reload();
-    });
   });
   const topNavElement = document.querySelector('#top_nav') as HTMLElement;
   topNavElement.before(sliderFragment);
@@ -42,28 +45,12 @@ function init() {
       const input = e.target as HTMLInputElement;
       const parsed = parser(input.value);
       if (parsed) {
-        durationStorage.set(parsed.amount + parsed.unit);
+        storage.set(parsed.amount + parsed.unit);
         input.value = parsed.query;
-        storeAndReload(parsed.amount + parsed.unit);
       }
     }
   });
 }
-
-function storeAndReload(duration: string, callback?: () => void) {
-  durationStorage.set(duration);
-  const messageParams: IMessageParams = { duration, type: MESSAGE_STORE_DURATION };
-  chrome.runtime.sendMessage(messageParams, () => {
-    const lastError = chrome.runtime.lastError;
-    if (lastError) {
-      console.error('Error', lastError);
-      return;
-    }
-    // tslint:disable-next-line:no-unused-expression
-    callback && callback();
-  });
-}
-
 function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
   const count = AmountOfUnit.get(unit);
   return Array.from({ length: count }, (_, index) => {

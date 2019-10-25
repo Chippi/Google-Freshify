@@ -1,5 +1,5 @@
 import { DateTime, ToRelativeUnit } from 'luxon';
-import { ParserUnit } from './types';
+import { ParserUnit } from './CONSTANTS';
 
 export function getPastDate(unit: ParserUnit, amount: number): Date {
   const relativeUnit = getLuxonUnit(unit);

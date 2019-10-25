@@ -1,9 +1,12 @@
-export const MESSAGE_STORE_DURATION = 'MESSAGE_STORE_DURATION';
-
 export const DAYS = 6;
 export const WEEKS = 3;
 export const MONTHS = 11;
 export const YEARS = 10;
-export const ANYTIME = 1;
 
-export const totalSteps = DAYS + WEEKS + MONTHS + YEARS + ANYTIME;
+export enum ParserUnit {
+    y = 'y',
+    m = 'm',
+    w = 'w',
+    d = 'd',
+  }
+  

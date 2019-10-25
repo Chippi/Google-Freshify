@@ -1,16 +1,12 @@
-import { MESSAGE_STORE_DURATION as STORE_ROLLING_TIME } from '../CONSTANTS';
 import * as domains from '../domains.js';
 import { getDate } from '../durationHelpers';
-import { durationStorage } from '../storage';
-import { IMessageParams } from '../types';
+import { storage } from '../storage';
 
 console.log('Hello from background, domains:', domains);
 
-chrome.runtime.onMessage.addListener((request: IMessageParams, sender, sendResponse) => {
-  if (request.type === STORE_ROLLING_TIME) {
-    durationStorage.set(request.duration);
-    sendResponse();
-  }
+let duration = null;
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    duration = changes.STORAGE_TIME_KEY.newValue;
 });
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -18,8 +14,6 @@ chrome.webRequest.onBeforeRequest.addListener(
     const [url, qs] = details.url.split('?');
     const params = new URLSearchParams(qs);
     const isImageSearch = params.get('tbm') === 'isch';
-    const duration = durationStorage.get();
-
     if (isImageSearch) {
       return;
     }
