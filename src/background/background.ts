@@ -1,12 +1,14 @@
 import * as domains from '../domains.js';
 import { getDate } from '../durationHelpers';
-import { storage } from '../storage';
+import { STORAGE_TIME_KEY } from '../storage';
 
 console.log('Hello from background, domains:', domains);
 
 let duration = null;
 chrome.storage.onChanged.addListener((changes, namespace) => {
-    duration = changes.STORAGE_TIME_KEY.newValue;
+  if (changes[STORAGE_TIME_KEY]) {
+    duration = changes[STORAGE_TIME_KEY].newValue;
+  }
 });
 
 chrome.webRequest.onBeforeRequest.addListener(
