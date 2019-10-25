@@ -1,11 +1,10 @@
 import { DateTime } from 'luxon';
-import { DAYS, MONTHS, ParserUnit, WEEKS, YEARS } from '../CONSTANTS';
-import { getDurationText } from '../durationHelpers';
-import { storage } from '../storage';
+import { storage, STORAGE_TIME_KEY } from '../storage';
 import { STORAGE_SAVE_IN_MINUTES } from './../storage';
 import './content.scss';
-import { animateSliderCircleToSelected, createSlider, ISliderOption } from './dom';
+import { animateSliderCircleToSelected, createSlider } from './dom';
 import { parser } from './parser';
+import { createSliderModel } from './sliderOptionsModel';
 
 let currentDuration;
 
@@ -32,18 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function init() {
-  const sliderOptions: ISliderOption[] = [
-    ...generateSliderOptions(ParserUnit.d),
-    ...generateSliderOptions(ParserUnit.w),
-    ...generateSliderOptions(ParserUnit.m),
-    ...generateSliderOptions(ParserUnit.y),
-    {
-      duration: null,
-      text: getDurationText(null),
-      superItem: true,
-      isSelected: currentDuration === null,
-    },
-  ];
+  const sliderOptions = createSliderModel(currentDuration);
 
   const sliderFragment = createSlider(sliderOptions, async duration => {
     await storage.set(duration);
@@ -69,23 +57,3 @@ function init() {
     }
   });
 }
-function generateSliderOptions(unit: ParserUnit): ISliderOption[] {
-  const count = AmountOfUnit.get(unit);
-  return Array.from({ length: count }, (_, index) => {
-    const duration = `${index + 1}${unit}`;
-    const text = getDurationText(duration);
-    return {
-      superItem: index === 0,
-      isSelected: currentDuration === duration,
-      duration,
-      text,
-    };
-  });
-}
-
-const AmountOfUnit = new Map<ParserUnit, number>([
-  [ParserUnit.d, DAYS],
-  [ParserUnit.w, WEEKS],
-  [ParserUnit.m, MONTHS],
-  [ParserUnit.y, YEARS],
-]);

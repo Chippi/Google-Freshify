@@ -1,16 +1,10 @@
 import { DIV, P } from './domHelpers';
+import { ISliderOptionModel } from './sliderOptionsModel';
 
-export interface ISliderOption {
-  text: string;
-  duration: string;
-  superItem?: boolean;
-  isSelected?: boolean;
-}
-
-let sliderItems: HTMLElement[] = [];
+const sliderItems: HTMLElement[] = [];
 let sliderCircleRef: HTMLElement; // Used to animate the circle
 
-export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
+export const createSlider = (sliderOptions: ISliderOptionModel[], onSelect) => {
   const sliderWrapper = DIV('freshify');
   const options = createSliderOptions(sliderOptions, onSelect);
 
@@ -20,7 +14,7 @@ export const createSlider = (sliderOptions: ISliderOption[], onSelect) => {
   return sliderWrapper;
 };
 
-const createSliderOptions = (sliderOptions: ISliderOption[], onSelect) => {
+const createSliderOptions = (sliderOptions: ISliderOptionModel[], onSelect) => {
   return sliderOptions.map(option => {
     const sliderItem = DIV('freshify__option');
     sliderItems.push(sliderItem);
@@ -47,7 +41,7 @@ const createSliderOptions = (sliderOptions: ISliderOption[], onSelect) => {
   });
 };
 
-export const animateSliderCircleToSelected = (sliderOptions: ISliderOption[]) => {
+export const animateSliderCircleToSelected = (sliderOptions: ISliderOptionModel[]) => {
   const selectedIndex = sliderOptions.findIndex(x => x.isSelected);
   const optionWidth = 19.5;
 
