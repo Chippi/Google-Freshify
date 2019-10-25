@@ -1,6 +1,5 @@
 $google-blue: #4285f4;
 $slider-bg: #dbdbdb;
-$content-width: 596px;
 $freshify-margin-left: 168px;
 
 .freshify {
@@ -34,6 +33,10 @@ $freshify-margin-left: 168px;
                 opacity: 1;
                 transition: .1s opacity ease;
             }
+            
+            .freshify__option--dot {
+                background: $google-blue;
+            }
         }
         
         &--super {
@@ -50,6 +53,7 @@ $freshify-margin-left: 168px;
             margin-top: 8px;
             background: $slider-bg;
             flex-shrink: 0;
+            z-index: 1;
             border-radius: 100%;
         }
         
@@ -68,6 +72,7 @@ $freshify-margin-left: 168px;
         margin-top: 4px;
         pointer-events: none;
         position: absolute;
+        z-index: 10;
         
         &--transition-enabled {
             transition: .2s transform ease;
@@ -85,7 +90,7 @@ $freshify-margin-left: 168px;
         color: white;
         display: flex;
         transition: .2s opacity ease;
-        top: -16px;
+        top: -18px;
         font-size: 10px;
         box-shadow: 1px 0px 5px 0px rgba(0,0,0,0.2);
         
