@@ -24,10 +24,9 @@ const createSliderOptions = () => {
         option.superItem ? P('freshify__option--text', option.text) : undefined,
       ],
     );
-    sliderItem.dataset.duration = option.duration;
 
-    sliderItem.addEventListener('click', e => {
-      const duration = (e.currentTarget as HTMLElement).dataset.duration;
+    sliderItem.addEventListener('click', () => {
+      const duration = option.duration;
       setSelectedOptionModel(duration);
       animateSliderCircleToSelected();
       storage.set(duration);
