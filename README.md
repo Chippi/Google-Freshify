@@ -1,6 +1,8 @@
 # Google Freshify
 ⭐️ Star us on GitHub — it helps!
 
+![](https://i.imgur.com/D6xWvVH.png)
+
 *Have you ever got old and non-relevant search results on google? Google Freshify was built to solve this annoying issue.* 
 
 Google Freshify is a quick & powerful date filtering extension for Google Search. Your date filter settings will be saved and ready for new searches on Google. 
