@@ -8,7 +8,7 @@
 Google Freshify is a quick & powerful date filtering extension for Google Search. Your date filter settings will be saved and ready for new searches on Google. 
 
 ## Download
-<a href="https://chrome.google.com/webstore/category/extensions" 
+<a href="https://chrome.google.com/webstore/detail/google-freshify/mmnndibhgjiljodakgpnmphgfompmmnf" 
    target="_blank">
     <img src="https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_496x150.png">
 </a>
