@@ -10,7 +10,7 @@ const config = {
   entry: {
     content: './src/content/content.ts',
     background: './src/background/background.ts',
-    popup: './src/popup/popup.ts'
+    popup: './src/popup/popup.ts',
   },
   output: {
     filename: '[name].js',
@@ -33,19 +33,21 @@ const config = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-    new CopyPlugin([
-      {
-        from: 'manifest.json',
-      },
-      {
-        from: 'src/assets/**',
-        flatten: true,
-      },
-      {
-        from: 'src/popup/popup.html',
-        flatten: true,
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'manifest.json',
+        },
+        {
+          from: 'src/assets/**',
+          flatten: true,
+        },
+        {
+          from: 'src/popup/popup.html',
+          flatten: true,
+        },
+      ],
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
