@@ -1,5 +1,5 @@
 import { storage } from '../storage';
-import { DIV, P } from './domHelpers';
+import { click, DIV, P } from './domHelpers';
 import {
   getSelectedOptionModelIndex,
   setSelectedOptionModel,
@@ -9,34 +9,28 @@ import {
 const sliderItems: HTMLElement[] = [];
 let sliderCircleRef: HTMLElement; // Used to animate the circle
 
+const sliderOptions = sliderOptionsModel.map(option => {
+  const sliderItem = click(() => {
+    const duration = option.duration;
+    setSelectedOptionModel(duration);
+    animateSliderCircleToSelected();
+    storage.set(duration);
+    window.location.reload();
+  }, DIV(
+    `freshify__option ${option.superItem ? 'freshify__option--super' : ''}`,
+    [
+      DIV('freshify__option--dot'),
+      DIV('freshify__tooltip', P('', option.text)),
+      option.superItem ? P('freshify__option--text', option.text) : undefined,
+    ],
+  ));
+  sliderItems.push(sliderItem[0]);
+  return sliderItem[0];
+});
+
 export const createSlider = () => {
   sliderCircleRef = DIV('freshify__circle');
-  return DIV('freshify', [DIV('freshify__bar'), sliderCircleRef, ...createSliderOptions()]);
-};
-
-const createSliderOptions = () => {
-  return sliderOptionsModel.map(option => {
-    const sliderItem = DIV(
-      `freshify__option ${option.superItem ? 'freshify__option--super' : ''}`,
-      [
-        DIV('freshify__option--dot'),
-        DIV('freshify__tooltip', P('', option.text)),
-        option.superItem ? P('freshify__option--text', option.text) : undefined,
-      ],
-    );
-
-    sliderItem.addEventListener('click', () => {
-      const duration = option.duration;
-      setSelectedOptionModel(duration);
-      animateSliderCircleToSelected();
-      storage.set(duration);
-      window.location.reload();
-    });
-
-    sliderItems.push(sliderItem);
-
-    return sliderItem;
-  });
+  return DIV('freshify', [DIV('freshify__bar'), sliderCircleRef, ...sliderOptions]);
 };
 
 export const animateSliderCircleToSelected = () => {
@@ -58,11 +52,7 @@ const enableTransitionsAfterInitialPositioning = () => {
 };
 
 const addActiveStateToOption = (selectedIndex: number) => {
-  sliderItems.forEach((item, index) => {
-    item.classList.remove('freshify__option--selected');
-
-    index === selectedIndex
-      ? item.classList.add('freshify__option--selected')
-      : item.classList.remove('freshify__option--selected');
-  });
+  sliderItems.forEach((item, index) =>
+    item.classList.toggle('freshify__option--selected', index === selectedIndex)
+  );
 };
