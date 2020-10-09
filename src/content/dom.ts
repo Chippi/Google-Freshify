@@ -6,11 +6,8 @@ import {
   sliderOptionsModel,
 } from './sliderOptionsModel';
 
-const sliderItems: HTMLElement[] = [];
-let sliderCircleRef: HTMLElement; // Used to animate the circle
-
-const sliderOptions = sliderOptionsModel.map(option => {
-  const sliderItem = click(() => {
+const sliderOptions: HTMLElement[] = sliderOptionsModel.map(option =>
+  click(() => {
     const duration = option.duration;
     setSelectedOptionModel(duration);
     animateSliderCircleToSelected();
@@ -23,10 +20,11 @@ const sliderOptions = sliderOptionsModel.map(option => {
       DIV('freshify__tooltip', P('', option.text)),
       option.superItem ? P('freshify__option--text', option.text) : undefined,
     ],
-  ));
-  sliderItems.push(sliderItem[0]);
-  return sliderItem[0];
-});
+  ))[0]
+);
+
+
+let sliderCircleRef: HTMLElement; // Used to animate the circle
 
 export const createSlider = () => {
   sliderCircleRef = DIV('freshify__circle');
@@ -52,7 +50,7 @@ const enableTransitionsAfterInitialPositioning = () => {
 };
 
 const addActiveStateToOption = (selectedIndex: number) => {
-  sliderItems.forEach((item, index) =>
+  sliderOptions.forEach((item, index) =>
     item.classList.toggle('freshify__option--selected', index === selectedIndex)
   );
 };
