@@ -2,7 +2,7 @@ import * as domains from '../domains.js';
 import { getDate } from '../durationHelpers';
 import { STORAGE_TIME_KEY } from '../storage';
 
-console.log('Hello from background, domains:', domains);
+// console.log('Hello from background, domains:', domains);
 
 let duration = null;
 chrome.storage.onChanged.addListener((changes, namespace) => {

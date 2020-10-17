@@ -6,29 +6,30 @@ import {
   sliderOptionsModel,
 } from './sliderOptionsModel';
 
-const sliderOptions: HTMLElement[] = sliderOptionsModel.map(option =>
-  click(() => {
-    const duration = option.duration;
-    setSelectedOptionModel(duration);
-    animateSliderCircleToSelected();
-    storage.set(duration);
-    window.location.reload();
-  }, DIV(
-    `freshify__option ${option.superItem ? 'freshify__option--super' : ''}`,
-    [
-      DIV('freshify__option--dot'),
-      DIV('freshify__tooltip', P('', option.text)),
-      option.superItem ? P('freshify__option--text', option.text) : undefined,
-    ],
-  ))[0]
-);
-
-
-let sliderCircleRef: HTMLElement; // Used to animate the circle
+const sliderCircleRef = DIV('freshify__circle'); // Referenced to animate the circle
 
 export const createSlider = () => {
-  sliderCircleRef = DIV('freshify__circle');
-  return DIV('freshify', [DIV('freshify__bar'), sliderCircleRef, ...sliderOptions]);
+  return DIV('freshify', [
+    DIV('freshify__bar'),
+    sliderCircleRef,
+    DIV('display:flex;', sliderOptionsModel.map(option =>
+      click((e) => {
+        const { duration } = option;
+        setSelectedOptionModel(duration);
+        animateSliderCircleToSelected();
+        addActiveStateToOption();
+        storage.set(duration);
+        window.location.reload();
+      }, DIV(
+        `freshify__option ${option.superItem ? 'freshify__option--super' : ''}`,
+        [
+          DIV('freshify__option--dot'),
+          DIV('freshify__tooltip', P('', option.text)),
+          option.superItem ? P('freshify__option--text', option.text) : undefined,
+        ],
+      ))[0] as HTMLElement
+    ))
+  ]);
 };
 
 export const animateSliderCircleToSelected = () => {
@@ -42,15 +43,15 @@ export const animateSliderCircleToSelected = () => {
   sliderCircleRef.style.transform = `translateX(${positionFromLeftInPixels})`;
 
   enableTransitionsAfterInitialPositioning();
-  addActiveStateToOption(selectedIndex);
 };
 
 const enableTransitionsAfterInitialPositioning = () => {
   setTimeout(() => sliderCircleRef.classList.add('freshify__circle--transition-enabled'));
 };
 
-const addActiveStateToOption = (selectedIndex: number) => {
-  sliderOptions.forEach((item, index) =>
+const addActiveStateToOption = () => {
+  const selectedIndex = getSelectedOptionModelIndex();
+  Array.from(document.querySelectorAll(".freshify__option")).forEach((item, index) =>
     item.classList.toggle('freshify__option--selected', index === selectedIndex)
   );
 };
